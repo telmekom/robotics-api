@@ -1,5 +1,6 @@
+from ast import Dict
 from typing import List, Union
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel
 
 # Robot List
 
@@ -9,13 +10,6 @@ class RobotListItem(BaseModel):
     shop_name: str
     sn: str
     product_code: str
-
-    # @field_validator('shop_name')
-    # def validate_shop_name(cls, value):
-    #     # EXAMPLE OF VALIDATION
-    #     if len(value) > 50:
-    #         raise ValueError("Shop name must be less than 50 characters")
-    #     return value
 
 class RobotListData(BaseModel):
     count: int
@@ -29,13 +23,13 @@ class RobotListResponse(BaseModel):
 # Robot Analysis
 
 class RobotAnalysisChartItem(BaseModel):
-    task_time: str
-    product_code: int
-    run_count: int
+    task_time: Union[str, None] = None
+    product_code: Union[int, None] = None
+    run_count: Union[int, None] = None
 
 class RobotAnalysisChart(BaseModel):
-    task_time: str
-    run_count: int
+    task_time: Union[str, None] = None
+    run_count: Union[int, None] = None
     list: List[RobotAnalysisChartItem]
 
 class RobotAnalysisData(BaseModel):
@@ -45,4 +39,33 @@ class RobotAnalysisData(BaseModel):
 class RobotAnalysisResponse(BaseModel):
     message: Union[str, None] = None
     data: Union[RobotAnalysisData, None] = None
+    trace_id: Union[str, None] = None
+
+# Robot Statistics
+
+class RobotStatisticsDataItem(BaseModel):
+    boot_count: Union[int, None] = None
+    total_count: Union[int, None] = None
+    bind_count: Union[int, None] = None
+    active_count: Union[int, None] = None
+    lively_rate: Union[float, None] = None
+
+class RobotStatisticsChartItem(BaseModel):
+    product_code: Union[str, None] = None
+    bind_count: Union[int, None] = None
+    active_count: Union[int, None] = None
+    bind_rate: Union[float, None] = None
+    active_rate: Union[int, None] = None
+
+class RobotStatisticsChart(BaseModel):
+    chart: Dict[str, RobotStatisticsChartItem]
+
+class RobotStatisticsData(BaseModel):
+    summary: RobotStatisticsDataItem
+    qoq: RobotStatisticsDataItem
+    chart: RobotStatisticsChart
+
+class RobotStatisticsResponse(BaseModel):
+    message: Union[str, None] = None
+    data: Union[RobotStatisticsData, None] = None
     trace_id: Union[str, None] = None

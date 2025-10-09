@@ -132,7 +132,7 @@ def get_shops(limit: int = 10, offset: int = 0):
     )
 
 @router.get("/shops/analysis", response_model=ShopAnalysisResponse)
-def get_shop_statistics(start_time: int, end_time: int, shop_id: int = None, time_unit: TimeUnit = TimeUnit.DAY, timezone_offset: int = 0):
+def get_shop_analytics(start_time: int, end_time: int, shop_id: int = None, time_unit: TimeUnit = TimeUnit.DAY, timezone_offset: int = 0):
     # Mock data to remove - change it to PUDU-API-Call
     shopAnalysisData = generate_shop_analysis_example_data()
 
