@@ -1,4 +1,3 @@
-from ast import Dict
 from typing import List, Union
 from pydantic import BaseModel
 
@@ -58,7 +57,7 @@ class RobotStatisticsChartItem(BaseModel):
     active_rate: Union[int, None] = None
 
 class RobotStatisticsChart(BaseModel):
-    chart: Dict[str, RobotStatisticsChartItem]
+    chart: list[str, RobotStatisticsChartItem]
 
 class RobotStatisticsData(BaseModel):
     summary: RobotStatisticsDataItem
