@@ -3,8 +3,12 @@ import datetime
 import hmac
 import hashlib
 from urllib.request import *
-from urllib.parse import urlparse
+from urllib.parse import urlencode, urlparse
 
+def clean_and_encode_params(params: dict):
+    params = {k: v for k, v in params.items() if v is not None}
+    params = dict(sorted(params.items()))
+    return urlencode(params)
 
 def build_headers_with_hmac (url: str, accept: str, content_type: str, method: int, app_key: str, secret_key: str):
     parsed_url = urlparse(url)

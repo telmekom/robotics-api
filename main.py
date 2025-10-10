@@ -15,7 +15,7 @@ app.include_router(shops.router)
 def health_check():
     try:
         request_data = {
-            "url": f'{os.getenv("PUDU_API_URL")}/healthCheck',
+            "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/healthCheck',
             "accept": 'application/json',
             "content_type": 'application/json',
             "method": 'GET',
