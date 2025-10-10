@@ -9,13 +9,13 @@ load_dotenv()
 
 app = FastAPI()
 app.include_router(shops.router)
-app.include_router(robots.router)
+#app.include_router(robots.router)
 
 @app.get("/healthcheck", description="Basic server availability check")
 def health_check():
     try:
         request_data = {
-            "url": 'https://csg-open-platform.pudutech.com/pudu-entry/data-open-platform-service/v1/api/healthCheck',
+            "url": f'{os.getenv("PUDU_API_URL")}/healthCheck',
             "accept": 'application/json',
             "content_type": 'application/json',
             "method": 'GET',

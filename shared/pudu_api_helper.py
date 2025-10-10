@@ -10,7 +10,8 @@ def build_headers_with_hmac (url: str, accept: str, content_type: str, method: i
     parsed_url = urlparse(url)
 
     host = parsed_url.netloc
-    path = parsed_url.path
+    path = f"{parsed_url.path}?{parsed_url.query}" if parsed_url.query else parsed_url.path
+
     # [ToDo] Add MD5 Hashing for Content for POST-Requests
     md5_content: str = ""
     GMT_FORMAT = "%a, %d %b %Y %H:%M:%S GMT"
