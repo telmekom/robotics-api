@@ -17,9 +17,14 @@ def get_shops(
         limit: int = Query(10, ge=1), 
         offset: int = Query(0, ge=0)
     ):
+        encoded_params = clean_and_encode_params({
+            "limit": limit, 
+            "offset": offset, 
+        })
+        
         try:
             request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/shop?limit={limit}&offset={offset}',
+                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/shop?{encoded_params}',
                 "accept": 'application/json',
                 "content_type": 'application/json',
                 "method": 'GET',

@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import Dict, List, Union
 from pydantic import BaseModel
 
 # Robot List
@@ -57,12 +57,12 @@ class RobotStatisticsChartItem(BaseModel):
     active_rate: Union[int, None] = None
 
 class RobotStatisticsChart(BaseModel):
-    chart: list[str, RobotStatisticsChartItem]
+    chart: Dict[str, RobotStatisticsChartItem] = {}
 
 class RobotStatisticsData(BaseModel):
-    summary: RobotStatisticsDataItem
-    qoq: RobotStatisticsDataItem
-    chart: RobotStatisticsChart
+    summary: Union[RobotStatisticsDataItem, None] = None
+    qoq: Union[RobotStatisticsDataItem, None] = None
+    chart: Union[RobotStatisticsChart, None] = None
 
 class RobotStatisticsResponse(BaseModel):
     message: Union[str, None] = None
