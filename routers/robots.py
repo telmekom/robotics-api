@@ -114,20 +114,37 @@ def get_robot_statistics(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
+@router.get("/robot-ops/statistics", response_model=RobotOpsStatisticsResponse)
+def get_robot_ops_statistics(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int = Query(description="Robot Shop ID"),
+        timezone_offset: int = Query(0, description="GMT offset (GMT-12 to GMT+14)", ge=-12, le=14),
+    ):
 
+        try:
+            encoded_params = clean_and_encode_params({
+                "start_time": start_time, 
+                "end_time": end_time, 
+                "shop_id": shop_id, 
+                "timezone_offset": timezone_offset,
+            })
 
-# # TODO
-# @router.get("/robot-ops/analysis ", response_model=None)
-# def get_robot_ops_analysis(limit: int = 10, offset: int = 0, shop_id: int = None):
-#     # Mock data to remove - change it to PUDU-API-Call
-#     data = []
+            request_data = {
+                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/brief/run?{encoded_params}',
+                "accept": 'application/json',
+                "content_type": 'application/json',
+                "method": 'GET',
+                "app_key" : os.getenv("API_APP_KEY"),
+                "secret_key": os.getenv("API_APP_SECRET"),
+            }
 
-#     return None
-
-# # TODO
-# @router.get("/robot-ops/statistics ", response_model=None)
-# def get_robot_ops_statistics(limit: int = 10, offset: int = 0, shop_id: int = None):
-#     # Mock data to remove - change it to PUDU-API-Call
-#     data = []
-
-#     return None
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}

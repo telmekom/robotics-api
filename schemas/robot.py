@@ -68,3 +68,21 @@ class RobotStatisticsResponse(BaseModel):
     message: Union[str, None] = None
     data: Union[RobotStatisticsData, None] = None
     trace_id: Union[str, None] = None
+
+
+# Robot Ops Statistics
+
+class RobotOpsStatisticsDataItem(BaseModel):
+    duration: Union[float, None] = None
+    mileage: Union[float, None] = None
+    task_count: Union[int, None] = None
+    area: Union[int, None] = None
+
+class RobotOpsStatisticsData(BaseModel):
+    summary: Union[RobotOpsStatisticsDataItem, None] = None
+    qoq: Union[RobotOpsStatisticsDataItem, None] = None
+
+class RobotOpsStatisticsResponse(BaseModel):
+    message: Union[str, None] = None
+    data: Union[RobotOpsStatisticsData, None] = None
+    trace_id: Union[str, None] = None
