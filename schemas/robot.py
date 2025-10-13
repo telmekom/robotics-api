@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Any, Dict, List, Union
 from pydantic import BaseModel
 
 # Robot List
@@ -102,4 +102,50 @@ class RobotPositionData(BaseModel):
 class RobotPositionResponse(BaseModel):
     message: Union[str, None] = None
     data: Union[RobotPositionData, None] = None
+    trace_id: Union[str, None] = None
+
+# Robot Cleaning Task List
+
+class RobotCleaningTaskListBackPoint(BaseModel):
+    floor: str
+    map_name: str
+    point_name: str
+    point_id: str
+
+class RobotCleaningTaskListStationConfig(BaseModel):
+    id: str
+    station_name: str
+    station_type: Union[int, None] = None
+    station_funtion: int
+    map_name: str
+
+class RobotCleaningTaskListConfig(BaseModel):
+    isopen: bool
+    scale: int
+
+class RobotCleaningTaskListItem(BaseModel):
+    task_id: str
+    version: int
+    name: str
+    desc: str
+    config: Dict[str, Any]
+    floor_list: List[Dict[str, Any]]
+    status: int
+    is_single_task: Union[bool, None] = None
+    task_count: Union[int, None] = None
+    task_mode: Union[int, None] = None
+    back_point: Union[RobotCleaningTaskListBackPoint, None] = None
+    pre_clean_time: Union[int, None] = None
+    is_area_connect: Union[bool, None] = None
+    station_config: Union[RobotCleaningTaskListStationConfig, None] = None
+    cleanagent_config: Union[RobotCleaningTaskListConfig, None] = None
+    is_hand_sort: Union[bool, None] = None
+
+class RobotCleaningTaskListData(BaseModel):
+    count: int
+    item: list[RobotCleaningTaskListItem]
+
+class RobotCleaningTaskListResponse(BaseModel):
+    message: Union[str, None] = None
+    data: Union[RobotCleaningTaskListData, None] = None
     trace_id: Union[str, None] = None

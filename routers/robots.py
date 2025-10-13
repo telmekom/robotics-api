@@ -176,3 +176,36 @@ def get_robot_position(
                 return { "code": response.status_code, "message": response.text}
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
+
+@router.get("/robots/cleaning/tasks", response_model=RobotCleaningTaskListResponse)
+def get_robot_cleaning_tasks(
+        shop_id: int | None = Query(None, description="Shop/Store ID - this or sn must be specified"),
+        sn: str | None = Query(None, description="Robot Serial Number - this or shop_id must be specified"),
+        # product: list[str] | None = Query(description="Product Type - can be used for CleanBot, MT1, MT1Pro, MT1Max"),
+        # mode: list[int] | None = Query(description="1: manual, 2: automatic, 3: inspection+mixed"),
+    ):
+        try:
+            encoded_params = clean_and_encode_params({
+                 "shop_id": shop_id,
+                "sn": sn, 
+            })
+
+            request_data = {
+                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/cleanbot-service/v1/api/open/task/list?{encoded_params}',
+                "accept": 'application/json',
+                "content_type": 'application/json',
+                "method": 'GET',
+                "app_key" : os.getenv("API_APP_KEY"),
+                "secret_key": os.getenv("API_APP_SECRET"),
+            }
+
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
+        
