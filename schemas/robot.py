@@ -1,3 +1,4 @@
+from tkinter import N
 from typing import Any, Dict, List, Union
 from pydantic import BaseModel
 
@@ -148,4 +149,64 @@ class RobotCleaningTaskListData(BaseModel):
 class RobotCleaningTaskListResponse(BaseModel):
     message: Union[str, None] = None
     data: Union[RobotCleaningTaskListData, None] = None
+    trace_id: Union[str, None] = None
+
+# Robot Cleaning Detail
+#RobotCleaningDetail
+
+class RobotCleaningDetailPosition(BaseModel):
+    x: float
+    y: float
+    z: float
+
+class RobotCleaningDetailBreakPoint(BaseModel):
+    index: int
+    vector: RobotCleaningDetailPosition
+    clean_type: Union[int, None] = None
+    start: Union[Dict[str, Any], None] = None
+
+class RobotCleaningDetailTaskStatus(BaseModel):
+    time: int
+    area: int
+    status: int
+    break_point: Union[RobotCleaningDetailBreakPoint, None] = None
+    percentage: Union[int, None] = None
+    remaining_time: Union[int, None] = None
+    task_area: Union[float, None] = None
+    cost_water: Union[int, None] = None
+    cost_battery: Union[int, None] = None
+    charge_count: Union[int, None] = None
+
+class RobotCleaningDetailCleanMode(BaseModel):
+    mode: int
+    report_id: str
+    msg: str
+    result: RobotCleaningDetailTaskStatus
+    task: Union[Dict[str, Any], None] = None
+    map: Union[Dict[str, Any], None] = None
+    config: Dict[str, Any]
+
+class RobotCleaningDetailCleanBot(BaseModel):
+    rising: int
+    sewage: int
+    task: int
+    clean: Union[RobotCleaningDetailCleanMode, None] = None
+
+class RobotCleaningDetailShop(BaseModel):
+    id: int
+    name: str
+
+class RobotCleaningDetailData(BaseModel):
+    mac: str
+    nickname: str
+    online: bool
+    battery: int
+    map: Dict[str, Any]
+    cleanbot: RobotCleaningDetailCleanBot
+    shop: RobotCleaningDetailShop
+    position: RobotCleaningDetailPosition
+
+class RobotCleaningDetailResponse(BaseModel):
+    message: Union[str, None] = None
+    data: Union[RobotCleaningDetailData, None] = None
     trace_id: Union[str, None] = None

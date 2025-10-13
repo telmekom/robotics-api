@@ -209,3 +209,30 @@ def get_robot_cleaning_tasks(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
         
+@router.get("/robots/cleaning/detail", response_model=RobotCleaningDetailResponse)
+def get_robot_cleaning_detail(
+        sn: str = Query(description="Robot Serial Number"),
+    ):
+        try:
+            encoded_params = clean_and_encode_params({
+                "sn": sn, 
+            })
+
+            request_data = {
+                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/cleanbot-service/v1/api/open/robot/detail?{encoded_params}',
+                "accept": 'application/json',
+                "content_type": 'application/json',
+                "method": 'GET',
+                "app_key" : os.getenv("API_APP_KEY"),
+                "secret_key": os.getenv("API_APP_SECRET"),
+            }
+
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
