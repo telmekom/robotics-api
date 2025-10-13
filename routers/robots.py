@@ -148,3 +148,31 @@ def get_robot_ops_statistics(
                 return { "code": response.status_code, "message": response.text}
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
+        
+@router.get("/robots/get_position", response_model=RobotPositionResponse)
+def get_robot_position(
+        sn: str = Query(description="Robot Serial Number"),
+    ):
+        try:
+            encoded_params = clean_and_encode_params({
+                "sn": sn, 
+            })
+
+            request_data = {
+                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/open-platform-service/v1/robot/get_position?{encoded_params}',
+                "accept": 'application/json',
+                "content_type": 'application/json',
+                "method": 'GET',
+                "app_key" : os.getenv("API_APP_KEY"),
+                "secret_key": os.getenv("API_APP_SECRET"),
+            }
+
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}

@@ -86,3 +86,20 @@ class RobotOpsStatisticsResponse(BaseModel):
     message: Union[str, None] = None
     data: Union[RobotOpsStatisticsData, None] = None
     trace_id: Union[str, None] = None
+
+# Robot Position 
+
+class RobotPositionVector(BaseModel):
+    x: Union[float, None] = None
+    y: Union[float, None] = None
+    z: Union[float, None] = None
+
+class RobotPositionData(BaseModel):
+    map_name: Union[str, None] = None
+    floor: Union[str, None] = None
+    position: Union[RobotPositionVector, None] = None
+
+class RobotPositionResponse(BaseModel):
+    message: Union[str, None] = None
+    data: Union[RobotPositionData, None] = None
+    trace_id: Union[str, None] = None
