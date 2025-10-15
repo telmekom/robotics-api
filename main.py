@@ -1,6 +1,6 @@
 import os
 from fastapi import FastAPI
-from routers import maps, shops, robots
+from routers import analysis, maps, shops, robots
 import requests
 from shared.pudu_api_helper import build_headers_with_hmac
 from dotenv import load_dotenv
@@ -11,6 +11,7 @@ app = FastAPI()
 app.include_router(shops.router)
 app.include_router(robots.router)
 app.include_router(maps.router)
+app.include_router(analysis.router)
 
 @app.get("/healthcheck", description="Basic server availability check")
 def health_check():
