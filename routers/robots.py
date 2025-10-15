@@ -185,7 +185,7 @@ def get_robot_cleaning_detail(
 # [ToDo] SEND COMMAND PUT
 
 @router.get("/robots/cleaning/scheduled-tasks", response_model=RobotCleaningScheduledTaskResponse)
-def get_robot_cleaning_detail(
+def get_robot_cleaning_scheduled_task_list(
         sn: str = Query(description="Robot Serial Number"),
         limit: int = Query(10, ge=1), 
         offset: int = Query(0, ge=0),
@@ -207,3 +207,4 @@ def get_robot_cleaning_detail(
                 return { "code": response.status_code, "message": response.text}
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
+        
