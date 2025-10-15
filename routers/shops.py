@@ -1,7 +1,7 @@
 from fastapi import Query, APIRouter
 import requests
 from schemas.shop import *
-from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params
+from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
 from shared.time import TimeUnit
 import os
 from dotenv import load_dotenv
@@ -23,14 +23,7 @@ def get_shops(
         })
         
         try:
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/shop?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/shop?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
@@ -56,15 +49,7 @@ def get_shop_statistics(
                 "timezone_offset": timezone_offset
             })
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/brief/shop?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/brief/shop?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
@@ -93,15 +78,7 @@ def get_shop_analytics(
                 "time_unit": time_unit.value
             })
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/analysis/shop?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/analysis/shop?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 

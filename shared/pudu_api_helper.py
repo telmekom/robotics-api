@@ -4,6 +4,20 @@ import hmac
 import hashlib
 from urllib.request import *
 from urllib.parse import urlencode, urlparse
+import os
+from dotenv import load_dotenv
+load_dotenv()  
+
+
+def generate_get_header_block(url: str):
+    return {
+        "url": url,
+        "accept": 'application/json',
+        "content_type": 'application/json',
+        "method": 'GET',
+        "app_key" : os.getenv("API_APP_KEY"),
+        "secret_key": os.getenv("API_APP_SECRET"),
+    }
 
 def clean_and_encode_params(params: dict):
     params = {k: v for k, v in params.items() if v is not None}

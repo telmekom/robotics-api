@@ -3,7 +3,7 @@ from fastapi import Query, APIRouter
 import requests
 from schemas.robot import *
 from schemas.shop import *
-from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params
+from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
 from shared.time import TimeUnit
 import os
 from dotenv import load_dotenv
@@ -27,14 +27,7 @@ def get_robots(
                     "shop_id": shop_id, 
             })
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/robot?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/robot?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
@@ -61,15 +54,7 @@ def get_robot_analysis(start_time: int = Query(description="Unix timestamp", ge=
                 "time_unit": time_unit.value
             })
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/analysis/run?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/analysis/run?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
@@ -95,15 +80,7 @@ def get_robot_statistics(
                 "timezone_offset": timezone_offset
             })
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/brief/robot?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/brief/robot?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
@@ -130,15 +107,7 @@ def get_robot_ops_statistics(
                 "timezone_offset": timezone_offset,
             })
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/brief/run?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/brief/run?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
@@ -158,15 +127,7 @@ def get_robot_position(
                 "sn": sn, 
             })
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/open-platform-service/v1/robot/get_position?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/open-platform-service/v1/robot/get_position?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
@@ -189,16 +150,8 @@ def get_robot_cleaning_tasks(
                  "shop_id": shop_id,
                 "sn": sn, 
             })
-
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/cleanbot-service/v1/api/open/task/list?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
+            
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/cleanbot-service/v1/api/open/task/list?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
@@ -218,15 +171,7 @@ def get_robot_cleaning_detail(
                 "sn": sn, 
             })
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/cleanbot-service/v1/api/open/robot/detail?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/cleanbot-service/v1/api/open/robot/detail?{encoded_params}')
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
                 
