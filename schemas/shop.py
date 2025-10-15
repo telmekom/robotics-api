@@ -1,6 +1,8 @@
 from typing import List, Union
 from pydantic import BaseModel
 
+from schemas.base import BaseResponse
+
 # Shop List
 
 class Shop(BaseModel):
@@ -13,10 +15,8 @@ class ShopListData(BaseModel):
     count: int
     list: List[Shop]
 
-class ShopListResponse(BaseModel):
+class ShopListResponse(BaseResponse):
     data: ShopListData
-    message: str
-    trace_id: str
 
 # Shop Analysis
 
@@ -39,10 +39,8 @@ class ShopAnalysisData(BaseModel):
     chart: List[ChartItem]
     qoq_chart: List[ChartItem]
 
-class ShopAnalysisResponse(BaseModel):
-    message: Union[str, None] = None
+class ShopAnalysisResponse(BaseResponse):
     data: Union[ShopAnalysisData, None] = None
-    trace_id: str
 
 # Shop Statictics
 
@@ -66,6 +64,5 @@ class ShopStatisticsData(BaseModel):
     lively_top10: list[ShopStatistics]
     silent_top10: list[ShopStatistics]
 
-class ShopStatisticsResponse(BaseModel):
-    message: Union[str, None] = None
+class ShopStatisticsResponse(BaseResponse):
     data: Union[ShopStatisticsData, None] = None

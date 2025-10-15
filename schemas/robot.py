@@ -2,6 +2,8 @@ from tkinter import N
 from typing import Any, Dict, List, Union
 from pydantic import BaseModel
 
+from schemas.base import BaseResponse
+
 # Robot List
 
 class RobotListItem(BaseModel):
@@ -15,10 +17,8 @@ class RobotListData(BaseModel):
     count: int
     list: list[RobotListItem]
 
-class RobotListResponse(BaseModel):
+class RobotListResponse(BaseResponse):
     data: RobotListData
-    message: str
-    trace_id: str
 
 # Robot Analysis
 
@@ -36,10 +36,8 @@ class RobotAnalysisData(BaseModel):
     chart: List[RobotAnalysisChart]
     qoq_chart: List[RobotAnalysisChart]
 
-class RobotAnalysisResponse(BaseModel):
-    message: Union[str, None] = None
+class RobotAnalysisResponse(BaseResponse):
     data: Union[RobotAnalysisData, None] = None
-    trace_id: Union[str, None] = None
 
 # Robot Statistics
 
@@ -65,10 +63,8 @@ class RobotStatisticsData(BaseModel):
     qoq: Union[RobotStatisticsDataItem, None] = None
     chart: Union[RobotStatisticsChart, None] = None
 
-class RobotStatisticsResponse(BaseModel):
-    message: Union[str, None] = None
+class RobotStatisticsResponse(BaseResponse):
     data: Union[RobotStatisticsData, None] = None
-    trace_id: Union[str, None] = None
 
 
 # Robot Ops Statistics
@@ -83,10 +79,8 @@ class RobotOpsStatisticsData(BaseModel):
     summary: Union[RobotOpsStatisticsDataItem, None] = None
     qoq: Union[RobotOpsStatisticsDataItem, None] = None
 
-class RobotOpsStatisticsResponse(BaseModel):
-    message: Union[str, None] = None
+class RobotOpsStatisticsResponse(BaseResponse):
     data: Union[RobotOpsStatisticsData, None] = None
-    trace_id: Union[str, None] = None
 
 # Robot Position 
 
@@ -100,10 +94,8 @@ class RobotPositionData(BaseModel):
     floor: Union[str, None] = None
     position: Union[RobotPositionVector, None] = None
 
-class RobotPositionResponse(BaseModel):
-    message: Union[str, None] = None
+class RobotPositionResponse(BaseResponse):
     data: Union[RobotPositionData, None] = None
-    trace_id: Union[str, None] = None
 
 # Robot Cleaning Task List
 
@@ -146,13 +138,10 @@ class RobotCleaningTaskListData(BaseModel):
     count: int
     item: list[RobotCleaningTaskListItem]
 
-class RobotCleaningTaskListResponse(BaseModel):
-    message: Union[str, None] = None
+class RobotCleaningTaskListResponse(BaseResponse):
     data: Union[RobotCleaningTaskListData, None] = None
-    trace_id: Union[str, None] = None
 
 # Robot Cleaning Detail
-#RobotCleaningDetail
 
 class RobotCleaningDetailPosition(BaseModel):
     x: float
@@ -206,7 +195,5 @@ class RobotCleaningDetailData(BaseModel):
     shop: RobotCleaningDetailShop
     position: RobotCleaningDetailPosition
 
-class RobotCleaningDetailResponse(BaseModel):
-    message: Union[str, None] = None
+class RobotCleaningDetailResponse(BaseResponse):
     data: Union[RobotCleaningDetailData, None] = None
-    trace_id: Union[str, None] = None

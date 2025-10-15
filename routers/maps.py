@@ -14,7 +14,7 @@ router = APIRouter(
     responses={404: {"description": "Maps API for Data, Analytics and Statistics"}}
 )
 
-@router.get("/maps", response_model=MapListResponse)
+@router.get("/maps")
 def get_maps(
         shop_id: int = Query(description="Parent Shop ID"),
     ):
