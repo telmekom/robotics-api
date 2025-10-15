@@ -1,8 +1,8 @@
-from typing import List, Union
+from typing import Any, List, Union
 from pydantic import BaseModel
 
 class BaseResponse(BaseModel):
-    data: None
-    message: str
-    trace_id: str
-    code: Union[int, None]
+    data: Any
+    message: Union[str, None] = None
+    trace_id: Union[str, None] = None
+    code: Union[int, None] = None

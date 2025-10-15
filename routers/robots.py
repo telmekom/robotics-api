@@ -181,3 +181,29 @@ def get_robot_cleaning_detail(
                 return { "code": response.status_code, "message": response.text}
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
+
+# [ToDo] SEND COMMAND PUT
+
+@router.get("/robots/cleaning/scheduled-tasks", response_model=RobotCleaningScheduledTaskResponse)
+def get_robot_cleaning_detail(
+        sn: str = Query(description="Robot Serial Number"),
+        limit: int = Query(10, ge=1), 
+        offset: int = Query(0, ge=0),
+    ):
+        try:
+            encoded_params = clean_and_encode_params({
+                "sn": sn, 
+                "limit": limit, 
+                "offset": offset
+            })
+
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/cleanbot-service/v1/api/open/cron/list?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}

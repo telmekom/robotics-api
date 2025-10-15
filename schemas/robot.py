@@ -1,5 +1,5 @@
 from tkinter import N
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 from pydantic import BaseModel
 
 from schemas.base import BaseResponse
@@ -197,3 +197,45 @@ class RobotCleaningDetailData(BaseModel):
 
 class RobotCleaningDetailResponse(BaseResponse):
     data: Union[RobotCleaningDetailData, None] = None
+
+# Robot Cleaning Scheduled Task List
+
+class RobotCleaningScheduledTaskListMap(BaseModel):
+    name: str
+    lv: int
+    floor: str
+
+class RobotCleaningScheduledTask(BaseModel):
+    task_id: str
+    task_version: int
+    name: str
+    task_desc: str
+    pre_clean_time: int
+    clean_area: float
+    map: List[RobotCleaningScheduledTaskListMap]
+    clean_mode: int
+    back_point: Optional[Dict[str, Any]]
+    clean_type: int
+    mode: int
+    product: str
+
+class RobotCleaningScheduledTaskCron(BaseModel):
+    cron_id: str
+    device_name: str
+    pid: str
+    hour: int
+    minute: int
+    weeks: List[int]
+    task_list: List[RobotCleaningScheduledTask]
+    create_time: int
+    update_time: int
+    cron_status: str
+    keep_time: int
+    repeat_clean_time: int
+
+class RobotCleaningScheduledTaskData(BaseModel):
+    count: int
+    list: List[RobotCleaningScheduledTaskCron]
+
+class RobotCleaningScheduledTaskResponse(BaseResponse):
+    data: Union[RobotCleaningScheduledTaskData, None] = None
