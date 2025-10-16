@@ -2,7 +2,7 @@ from tkinter import N
 from typing import Any, Dict, List, Optional, Union
 from pydantic import BaseModel
 
-from schemas.base import BaseResponse
+from schemas.base import BaseResponse, Vector3
 
 # Robot List
 
@@ -20,79 +20,12 @@ class RobotListData(BaseModel):
 class RobotListResponse(BaseResponse):
     data: RobotListData
 
-# Robot Analysis
-
-class RobotAnalysisChartItem(BaseModel):
-    task_time: Union[str, None] = None
-    product_code: Union[int, None] = None
-    run_count: Union[int, None] = None
-
-class RobotAnalysisChart(BaseModel):
-    task_time: Union[str, None] = None
-    run_count: Union[int, None] = None
-    list: List[RobotAnalysisChartItem]
-
-class RobotAnalysisData(BaseModel):
-    chart: List[RobotAnalysisChart]
-    qoq_chart: List[RobotAnalysisChart]
-
-class RobotAnalysisResponse(BaseResponse):
-    data: Union[RobotAnalysisData, None] = None
-
-# Robot Statistics
-
-class RobotStatisticsDataItem(BaseModel):
-    boot_count: Union[int, None] = None
-    total_count: Union[int, None] = None
-    bind_count: Union[int, None] = None
-    active_count: Union[int, None] = None
-    lively_rate: Union[float, None] = None
-
-class RobotStatisticsChartItem(BaseModel):
-    product_code: Union[str, None] = None
-    bind_count: Union[int, None] = None
-    active_count: Union[int, None] = None
-    bind_rate: Union[float, None] = None
-    active_rate: Union[int, None] = None
-
-class RobotStatisticsChart(BaseModel):
-    chart: Dict[str, RobotStatisticsChartItem] = {}
-
-class RobotStatisticsData(BaseModel):
-    summary: Union[RobotStatisticsDataItem, None] = None
-    qoq: Union[RobotStatisticsDataItem, None] = None
-    chart: Union[RobotStatisticsChart, None] = None
-
-class RobotStatisticsResponse(BaseResponse):
-    data: Union[RobotStatisticsData, None] = None
-
-
-# Robot Ops Statistics
-
-class RobotOpsStatisticsDataItem(BaseModel):
-    duration: Union[float, None] = None
-    mileage: Union[float, None] = None
-    task_count: Union[int, None] = None
-    area: Union[int, None] = None
-
-class RobotOpsStatisticsData(BaseModel):
-    summary: Union[RobotOpsStatisticsDataItem, None] = None
-    qoq: Union[RobotOpsStatisticsDataItem, None] = None
-
-class RobotOpsStatisticsResponse(BaseResponse):
-    data: Union[RobotOpsStatisticsData, None] = None
-
 # Robot Position 
-
-class RobotPositionVector(BaseModel):
-    x: Union[float, None] = None
-    y: Union[float, None] = None
-    z: Union[float, None] = None
 
 class RobotPositionData(BaseModel):
     map_name: Union[str, None] = None
     floor: Union[str, None] = None
-    position: Union[RobotPositionVector, None] = None
+    position: Union[Vector3, None] = None
 
 class RobotPositionResponse(BaseResponse):
     data: Union[RobotPositionData, None] = None
@@ -143,14 +76,9 @@ class RobotCleaningTaskListResponse(BaseResponse):
 
 # Robot Cleaning Detail
 
-class RobotCleaningDetailPosition(BaseModel):
-    x: float
-    y: float
-    z: float
-
 class RobotCleaningDetailBreakPoint(BaseModel):
     index: int
-    vector: RobotCleaningDetailPosition
+    vector: Vector3
     clean_type: Union[int, None] = None
     start: Union[Dict[str, Any], None] = None
 
@@ -193,7 +121,7 @@ class RobotCleaningDetailData(BaseModel):
     map: Dict[str, Any]
     cleanbot: RobotCleaningDetailCleanBot
     shop: RobotCleaningDetailShop
-    position: RobotCleaningDetailPosition
+    position: Vector3
 
 class RobotCleaningDetailResponse(BaseResponse):
     data: Union[RobotCleaningDetailData, None] = None

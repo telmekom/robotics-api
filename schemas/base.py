@@ -6,3 +6,8 @@ class BaseResponse(BaseModel):
     message: Union[str, None] = None
     trace_id: Union[str, None] = None
     code: Union[int, None] = None
+
+class Vector3(BaseModel):
+    x: float
+    y: float
+    z: float

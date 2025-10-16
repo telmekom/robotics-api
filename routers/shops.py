@@ -36,28 +36,7 @@ def get_shops(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/shops/statistics", response_model=ShopStatisticsResponse)
-def get_shop_statistics(
-        start_time: int = Query(description="Unix timestamp", ge=0),
-        end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = None,
-        timezone_offset: int = Query(0, description="GMT offset (GMT-12 to GMT+14)", ge=-12, le=14),
-    ):
-        try:
-            encoded_params = clean_and_encode_params({
-                "start_time": start_time, 
-                "end_time": end_time, 
-                "shop_id": shop_id, 
-                "timezone_offset": timezone_offset
-            })
 
-            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/brief/shop?{encoded_params}')
-            hmac_headers = build_headers_with_hmac(**request_data)
-            response = requests.get(request_data["url"], headers=hmac_headers)
-                
-            if response.status_code == 200:
-                return response.json()
-            else:
-                return { "code": response.status_code, "message": response.text}
-        except Exception as e:
-            return {"status": "ERROR", "message": str(e)}
+
+
+

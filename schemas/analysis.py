@@ -1,5 +1,5 @@
 from typing import Any, List, Optional, Union
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from schemas.base import BaseResponse
 
@@ -37,7 +37,7 @@ class AnalysisChartItem(BaseModel):
 
 class AnalysisData(BaseModel):
     summary: Optional[AnalysisInfos]
-    gog: Optional[AnalysisInfos]
+    qoq: Optional[AnalysisInfos]
     chart: Optional[List[AnalysisChartItem]]
     qoq_chart: Optional[List[AnalysisChartItem]]
 
