@@ -14,18 +14,6 @@ router = APIRouter(
     responses={404: {"description": "Robots API for Data, Analytics and Statistics"}}
 )
 
-
-
-
-
-
-
-
-
-
-
-
-
 @router.get("/robots", response_model=RobotListResponse)
 def get_robots(
         limit: int = Query(10, ge=1), 
@@ -50,8 +38,6 @@ def get_robots(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-
-        
 @router.get("/robots/get_position", response_model=RobotPositionResponse)
 def get_robot_position(
         sn: str = Query(description="Robot Serial Number"),
@@ -116,8 +102,6 @@ def get_robot_cleaning_detail(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-# [ToDo] SEND COMMAND PUT
-
 @router.get("/robots/cleaning/scheduled-tasks", response_model=RobotCleaningScheduledTaskResponse)
 def get_robot_cleaning_scheduled_task_list(
         sn: str = Query(description="Robot Serial Number"),
@@ -141,4 +125,5 @@ def get_robot_cleaning_scheduled_task_list(
                 return { "code": response.status_code, "message": response.text}
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
-        
+
+

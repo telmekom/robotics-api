@@ -6,7 +6,7 @@ from schemas.base import BaseResponse, Vector3
 
 # Robot List
 
-class RobotListItem(BaseModel):
+class RobotInfos(BaseModel):
     mac: str
     shop_id: str
     shop_name: str
@@ -15,7 +15,7 @@ class RobotListItem(BaseModel):
 
 class RobotListData(BaseModel):
     count: int
-    list: list[RobotListItem]
+    list: list[RobotInfos]
 
 class RobotListResponse(BaseResponse):
     data: RobotListData
@@ -23,12 +23,12 @@ class RobotListResponse(BaseResponse):
 # Robot Position 
 
 class RobotPositionData(BaseModel):
-    map_name: Union[str, None] = None
-    floor: Union[str, None] = None
-    position: Union[Vector3, None] = None
+    map_name: Optional[str]
+    floor: Optional[str]
+    position: Optional[Vector3]
 
 class RobotPositionResponse(BaseResponse):
-    data: Union[RobotPositionData, None] = None
+    data: Optional[RobotPositionData]
 
 # Robot Cleaning Task List
 
