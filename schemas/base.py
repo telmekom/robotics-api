@@ -1,11 +1,10 @@
-from typing import Any, List, Union
+from typing import Any, List, Optional, Union
 from pydantic import BaseModel
 
 class BaseResponse(BaseModel):
-    data: Any
-    message: Union[str, None] = None
-    trace_id: Union[str, None] = None
-    code: Union[int, None] = None
+    message: Optional[Any]
+    trace_id: Optional[str]
+    code: Optional[int]
 
 class Vector3(BaseModel):
     x: float

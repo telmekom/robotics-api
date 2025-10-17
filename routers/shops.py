@@ -37,6 +37,141 @@ def get_shops(
             return {"status": "ERROR", "message": str(e)}
 
 
+@router.get("/shops/robot-status", response_model=RobotLogResponse)
+def get_shops_robot_status(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        check_step: str | None = Query(None, examples=["CheckCAN", "CheckESP", "CheckRGBD", "CheckLidar", "CheckMap", "Finish"]), 
+        is_success: int | None = Query(None, description=" 0: failed (with exception), 1: succeeded, -1 did not filter", examples=[0, 1, -1]),
+        timezone_offset: int = 0,
+    ):
+        encoded_params = clean_and_encode_params({
+            "start_time": start_time, 
+            "end_time": end_time, 
+            "shop_id": shop_id, 
+            "offset": offset, 
+            "limit": limit, 
+            "check_step": check_step, 
+            "is_success": is_success, 
+            "timezone_offset": timezone_offset
+        })
+        
+        try:
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/log/boot/query_list?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
 
+@router.get("/shops/robot-errors", response_model=RobotErrorResponse)
+def get_shops_robot_errors(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        error_levels: str | None = Query(None, description="Fault level screening, multiple separated by commas. (Fatal|Error|Warning|Event"), 
+        error_types: str | None = Query(None, description="Fault type filtering, multiple separated by commas (LostBattery|LostCamera|LostCAN|LostIMU|LostLidar|LostLocalization|LostRGBD|WheelErrorLeft|WheelErrorRight)", examples=[0, 1, -1]),
+        timezone_offset: int = 0,
+    ):
+        encoded_params = clean_and_encode_params({
+            "start_time": start_time, 
+            "end_time": end_time, 
+            "shop_id": shop_id, 
+            "offset": offset, 
+            "limit": limit, 
+            "error_levels": error_levels, 
+            "error_types": error_types, 
+            "timezone_offset": timezone_offset
+        })
+        
+        try:
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/log/error/query_list?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
 
+@router.get("/shops/robot-charges", response_model=RobotChargeResponse)
+def get_shops_robot_charges(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        timezone_offset: int = 0,
+    ):
+        encoded_params = clean_and_encode_params({
+            "start_time": start_time, 
+            "end_time": end_time, 
+            "shop_id": shop_id, 
+            "offset": offset, 
+            "limit": limit, 
+            "timezone_offset": timezone_offset
+        })
+        
+        try:
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/log/charge/query_list?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
+        
 
+@router.get("/shops/robot-battery", response_model=RobotBatteryResponse)
+def get_shops_robot_changes(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        timezone_offset: int = 0,
+        sn: str | None = Query(None, description="Robot Serial Number"),
+        min_cycle: int | None = Query(None, description="Minimum cycle count (filter active when ≥0)", ge=0),
+        max_cycle: int | None = Query(None, description="Maximum cycle count (filter active when ≥0)", ge=0),
+        min_full_capacity: int | None = Query(None, description="Minimum full capacity (filter active when ≥0)", ge=0),
+        max_full_capacity: int | None = Query(None, description="Maximum full capacity (filter active when ≥0)", ge=0),
+    ):
+        encoded_params = clean_and_encode_params({
+            "start_time": start_time, 
+            "end_time": end_time, 
+            "shop_id": shop_id, 
+            "offset": offset, 
+            "limit": limit, 
+            "timezone_offset": timezone_offset,
+            "sn": sn,
+            "min_cycle": min_cycle,
+            "max_cycle": max_cycle,
+            "min_full_capacity": min_full_capacity,
+            "max_full_capacity": max_full_capacity
+        })
+        
+        try:
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/log/battery/query_list?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}

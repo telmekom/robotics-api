@@ -11,7 +11,6 @@ load_dotenv()
 
 router = APIRouter(
     tags=["Robots"],
-    responses={404: {"description": "Robots API for Data, Analytics and Statistics"}}
 )
 
 @router.get("/robots", response_model=RobotListResponse)

@@ -362,7 +362,8 @@ def get_analysis_shops_grid(
             return {"status": "ERROR", "message": str(e)}
 
 @router.get("/analysis/robot/general", response_model=AnalysisResponse, name="PUDU-Annotation: Machine run analysis")
-def get_analysis_robot_general(start_time: int = Query(description="Unix timestamp", ge=0),
+def get_analysis_robot_general(
+        start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
@@ -390,7 +391,7 @@ def get_analysis_robot_general(start_time: int = Query(description="Unix timesta
 
 ### STATISTICS ENDPOINTS ###
 
-@router.get("/statistics/shops/general", response_model=ShopStatisticsResponse, name="PUDU-Annotation: Store overview")
+@router.get("/statistics/shops/general", response_model=RobotStatisticsResponse, name="PUDU-Annotation: Store overview")
 def get_statistics_shops_general(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
