@@ -14,6 +14,8 @@
 * **Vector, Position, Point**: Interchangable terms to represent a 3D-point on the map. It can be used as waypoint or as the current position of the robot.
 * **QoQ**: Quarter-on-Quarter, data of the "current" quarter to the same data in the previous quarter
 * **Robot Type**: Could be Industrial (T600 / T600 Underride, T300), Cleaning (MT1, CC1, SH1) or Delivery (FlashBot, BellaBot, KettyBot, PuduBot, HolaBot). X-Lab / X-Series is not yet available. A list of Robots and details can be found on the [PUDU-Website](https://www.pudurobotics.com/en/products)
+* **Product Code, Machine Code**: The exact model of robot. A list of Robots and details can be found on the [PUDU-Website](https://www.pudurobotics.com/en/products)
+* **Unit of Measurements**: Area is in m², distance in km and duration in h
 
 ## Related Links
 * **Telmekom API Documentation**: https://URL/TO/SERVER/docs
