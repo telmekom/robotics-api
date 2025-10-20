@@ -15,10 +15,10 @@ class RobotInfos(BaseModel):
 
 class RobotListData(BaseModel):
     count: int
-    list: list[RobotInfos]
+    list: List[RobotInfos]
 
 class RobotListResponse(BaseResponse):
-    data: RobotListData
+    data: Optional[RobotListData]
 
 # Robot Position 
 
@@ -28,7 +28,7 @@ class RobotPositionData(BaseModel):
     position: Optional[Vector3]
 
 class RobotPositionResponse(BaseResponse):
-    data: Optional[RobotPositionData]
+    data: Optional[RobotPositionData] = None
 
 # Robot Cleaning Task List
 

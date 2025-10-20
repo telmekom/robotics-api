@@ -1,17 +1,14 @@
-from operator import ne
 from fastapi import Query, APIRouter
 import requests
 from schemas.analysis import *
 from schemas.shop import *
 from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
-from shared.time import TimeUnit
 import os
 from dotenv import load_dotenv
 load_dotenv()  
 
 router = APIRouter(
     tags=["Shops"],
-    responses={404: {"description": "Shops API for Data, Analytics and Statistics"}}
 )
 
 @router.get("/shops", response_model=ShopListResponse)
@@ -35,7 +32,6 @@ def get_shops(
                 return { "code": response.status_code, "message": response.text}
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
-
 
 @router.get("/shops/robot-status", response_model=RobotLogResponse)
 def get_shops_robot_status(
@@ -135,7 +131,6 @@ def get_shops_robot_charges(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
         
-
 @router.get("/shops/robot-battery", response_model=RobotBatteryResponse)
 def get_shops_robot_changes(
         start_time: int = Query(description="Unix timestamp", ge=0),
