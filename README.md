@@ -15,6 +15,22 @@
 * **QoQ**: Quarter-on-Quarter, data of the "current" quarter to the same data in the previous quarter
 * **Robot Type**: Could be Industrial (T600 / T600 Underride, T300), Cleaning (MT1, CC1, SH1) or Delivery (FlashBot, BellaBot, KettyBot, PuduBot, HolaBot). X-Lab / X-Series is not yet available. A list of Robots and details can be found on the [PUDU-Website](https://www.pudurobotics.com/en/products)
 * **Product Code, Machine Code**: The exact model of robot. A list of Robots and details can be found on the [PUDU-Website](https://www.pudurobotics.com/en/products)
+* **Robot Operations, Robot Ops**: Includes Statistics and Analysis of tasks and operations of the machines (f.ex. distance, time) - not the amount of robots or the status of them. For these informations refer to Robot Statistics / Analysis
+* **Statistics**: Contrary to Analysis/Analytics it contains pure values with no charts.
+* **Analyis, Analytics**: Contrary to Statistics it focuses on charts.
+
+* **Delivery-Task**: ???
+* **Cruise-Task**: ???
+* **Interactive-Task**: ???
+* **Customer Collection-/Solicit-Task**: ???
+* **Grid-Task**: ???
+* **Advertising-Task**: ???
+* **Return-/Recovery-Task**: ???
+* **Pickup-/Greeter-/Lead-Task**: ???
+* **Return-/Recovery-Task**: ???
+* **Call-Task**: ???
+* **Lifting-Task**:???
+
 * **Unit of Measurements**: Area is in m², distance in km and duration in h
 
 ## Related Links
