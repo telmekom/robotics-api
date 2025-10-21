@@ -19,17 +19,17 @@
 * **Statistics**: Contrary to Analysis/Analytics it contains pure values with no charts.
 * **Analyis, Analytics**: Contrary to Statistics it focuses on charts.
 
-* **Delivery-Task**: ???
-* **Cruise-Task**: ???
-* **Interactive-Task**: ???
-* **Customer Collection-/Solicit-Task**: ???
-* **Grid-Task**: ???
+* **Delivery-Task**: Delivers to (multiple) destination point in a single trip. 
+* **Cruise-Task**: "Patrol"-Mode. It circles between predefined points f.ex. for self-service drinks
+* **Interactive-Task**: Robot needs feedback / interaction (?)
+* **Customer Collection-/Solicit-Task**: The robot collects customer that then can interact with the robot
+* **Grid-Task**: (?) Grid generation?
 * **Advertising-Task**: ???
 * **Return-/Recovery-Task**: ???
-* **Pickup-/Greeter-/Lead-Task**: ???
-* **Return-/Recovery-Task**: ???
-* **Call-Task**: ???
-* **Lifting-Task**:???
+* **Pickup-/Greeter-/Lead-Task**: The robot leads customers to their tables. Then, it automatically returns to the greeting location.
+* **Return-/Recovery-Task**: The robot directly returns to the pickup location or the departure location.
+* **Call-Task**: (?) The robot makes a call with a predefined message
+* **Lifting-Task**: (?) The robot fetches from point A and delivers it to point B
 
 * **Unit of Measurements**: Area is in m², distance in km and duration in h
 
