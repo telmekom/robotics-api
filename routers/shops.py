@@ -40,7 +40,7 @@ def get_shops_robot_status(
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         offset: int = Query(0, ge=0),
         limit: int = Query(10, ge=1), 
-        check_step: str | None = Query(None, examples=["CheckCAN", "CheckESP", "CheckRGBD", "CheckLidar", "CheckMap", "Finish"]), 
+        check_step: str | None = Query(None, description="f.ex. CheckCAN, CheckESP, CheckRGBD, CheckLidar, CheckMap, Finish"), 
         is_success: int | None = Query(None, description=" 0: failed (with exception), 1: succeeded, -1 did not filter", examples=[0, 1, -1]),
         timezone_offset: int = 0,
     ):

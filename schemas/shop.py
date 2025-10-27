@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List, Optional
 from pydantic import BaseModel
 
 from schemas.base import BaseResponse
@@ -22,93 +22,93 @@ class ShopListResponse(BaseResponse):
 # Logs
 
 class RobotBaseLog(BaseModel):
-    id: Optional[str]
-    sn: Optional[str]
-    mac: Optional[str]
-    product_code: Optional[str]
-    upload_time: Optional[str]
-    task_time: Optional[str]
-    soft_version: Optional[str]
-    hard_version: Optional[str]
-    ip: Optional[str]
+    id: Optional[str] = None
+    sn: Optional[str] = None
+    mac: Optional[str] = None
+    product_code: Optional[str] = None
+    upload_time: Optional[str] = None
+    task_time: Optional[str] = None
+    soft_version: Optional[str] = None
+    hard_version: Optional[str] = None
+    ip: Optional[str] = None
 
 class RobotCheckResult(BaseModel):
-    check_step: Optional[str]
-    check_state: Optional[str]
-    check_description: Optional[str]
+    check_step: Optional[str] = None
+    check_state: Optional[str] = None
+    check_description: Optional[str] = None
 
 class RobotLog(RobotBaseLog):
-    check_result: Optional[List[RobotCheckResult]]
-    is_success: Optional[int]
+    check_result: Optional[List[RobotCheckResult]] = None
+    is_success: Optional[int] = None
 
 class RobotLogData(BaseModel):
-    total: Optional[int]
-    limit: Optional[int]
-    offset: Optional[int]
-    list: List[RobotLog]
+    total: Optional[int] = None
+    limit: Optional[int] = None
+    offset: Optional[int] = None
+    list: List[RobotLog] = []
 
 class RobotLogResponse(BaseResponse):
-    data: Optional[RobotLogData]
+    data: Optional[RobotLogData] = None
 
 # Log Errors
 
 class RobotErrorLog(RobotBaseLog):
-    check_result: Optional[List[RobotCheckResult]]
-    is_success: Optional[int]
-    error_level: Optional[str]
-    error_type: Optional[str]
-    error_id: Optional[str]
+    check_result: Optional[List[RobotCheckResult]] = None
+    is_success: Optional[int] = None
+    error_level: Optional[str] = None
+    error_type: Optional[str] = None
+    error_id: Optional[str] = None
 
 class RobotErrorData(BaseModel):
-    total: Optional[int]
-    limit: Optional[int]
-    offset: Optional[int]
-    list: List[RobotErrorLog]
+    total: Optional[int] = None
+    limit: Optional[int] = None
+    offset: Optional[int] = None
+    list: List[RobotErrorLog] = []
 
 class RobotErrorResponse(BaseResponse):
-    data: Optional[RobotErrorData]
+    data: Optional[RobotErrorData] = None
 
 # Log Charges
 
 class RobotChargeLog(RobotBaseLog):
-    charge_power_percent: Optional[int]
-    charge_duration: Optional[int]
-    min_power_percent: Optional[int]
-    max_power_percent: Optional[int]
+    charge_power_percent: Optional[int] = None
+    charge_duration: Optional[int] = None
+    min_power_percent: Optional[int] = None
+    max_power_percent: Optional[int] = None
 
 class RobotChargeData(BaseModel):
-    total: Optional[int]
-    limit: Optional[int]
-    offset: Optional[int]
-    list: List[RobotChargeLog]
+    total: Optional[int] = None
+    limit: Optional[int] = None
+    offset: Optional[int] = None
+    list: List[RobotChargeLog] = []
 
 class RobotChargeResponse(BaseResponse):
-    data: Optional[RobotChargeData]
+    data: Optional[RobotChargeData] = None
 
 # Log Battery
 
 class RobotChangeLog(RobotChargeLog):
-    battery_sn: Optional[str]
-    battery_model: Optional[int]
-    cycle: Optional[int]
-    design_capacity: Optional[int]
-    pack_voltage: Optional[int]
-    soc: Optional[int]
-    soh: Optional[int]
-    full_capacity: Optional[int]
-    work_status: Optional[int]
-    current: Optional[int]
-    cell_temperature: Optional[List[int]]
-    cell_voltage: Optional[List[int]]
-    shop_id: Optional[str]
-    shop_name: Optional[str]
-    battery_model_name: Optional[str]
+    battery_sn: Optional[str] = None
+    battery_model: Optional[int] = None
+    cycle: Optional[int] = None
+    design_capacity: Optional[int] = None
+    pack_voltage: Optional[int] = None
+    soc: Optional[int] = None
+    soh: Optional[int] = None
+    full_capacity: Optional[int] = None
+    work_status: Optional[int] = None
+    current: Optional[int] = None
+    cell_temperature: Optional[List[int]] = None
+    cell_voltage: Optional[List[int]] = None
+    shop_id: Optional[str] = None
+    shop_name: Optional[str] = None
+    battery_model_name: Optional[str] = None
 
 class RobotChangeData(BaseModel):
-    total: Optional[int]
-    limit: Optional[int]
-    offset: Optional[int]
-    list: List[RobotChangeLog]
+    total: Optional[int] = None
+    limit: Optional[int] = None
+    offset: Optional[int] = None
+    list: List[RobotChangeLog] = []
 
 class RobotBatteryResponse(BaseResponse):
-    data: Optional[RobotChangeData]
+    data: Optional[RobotChangeData] = None
