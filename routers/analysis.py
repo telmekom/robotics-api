@@ -1,7 +1,7 @@
 from fastapi import Query, APIRouter
 import requests
 from schemas.analysis import AnalysisResponse, CleaningAnalysisResponse
-from schemas.statistics import RobotOpsStatisticsResponse, RobotStatisticsResponse
+from schemas.statistics import RobotOpsStatisticsResponse, RobotStatisticsResponse, ShopStatisticsResponse
 from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
 from shared.time import TimeUnit
 import os
@@ -49,7 +49,7 @@ def get_analysis_shops_cleaning_detail(
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         clean_mode: int = Query(0, description="Clean Mode (0: all, 1: scrubber, 2: sweeping)", ge=0, le=2),
-        sub_mode: int = Query(0, description="Sub Clean Mode (-1: all, 0: custom, 1: carpet vacuuming, 3: silent dust pushing)", ge=-1, le=3),
+        sub_mode: int = Query(-1, description="Sub Clean Mode (-1: all, 0: custom, 1: carpet vacuuming, 3: silent dust pushing)", ge=-1, le=3),
         timezone_offset: int = 0
     ):
         try:
@@ -302,7 +302,7 @@ def get_analysis_shops_grid(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
   
-@router.get("/analysis/shops/ad", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - grid click")
+@router.get("/analysis/shops/ad", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - advertising mode")
 def get_analysis_shops_ad(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
@@ -420,7 +420,7 @@ def get_analysis_robot_general(
 
 ### STATISTICS ENDPOINTS ###
 
-@router.get("/statistics/shops/general", response_model_exclude_none=True, response_model=RobotStatisticsResponse, name="PUDU-Annotation: Store overview")
+@router.get("/statistics/shops/general", response_model_exclude_none=True, response_model=ShopStatisticsResponse, name="PUDU-Annotation: Store overview")
 def get_statistics_shops_general(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),

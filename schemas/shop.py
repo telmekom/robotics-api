@@ -18,7 +18,6 @@ class ShopListData(BaseModel):
 class ShopListResponse(BaseResponse):
     data: ShopListData
 
-
 # Logs
 
 class RobotBaseLog(BaseModel):

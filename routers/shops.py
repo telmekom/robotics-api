@@ -1,7 +1,6 @@
 from fastapi import Query, APIRouter
 import requests
-from schemas.analysis import *
-from schemas.shop import *
+from schemas.shop import RobotBatteryResponse, RobotChargeResponse, RobotErrorResponse, RobotLogResponse, ShopListResponse
 from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
 import os
 from dotenv import load_dotenv
