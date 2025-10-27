@@ -1,10 +1,7 @@
-import re
 from fastapi import Query, APIRouter
 import requests
-from schemas.robot import *
-from schemas.shop import *
+from schemas.robot import RobotCleaningDetailResponse, RobotCleaningScheduledTaskResponse, RobotCleaningTaskListResponse, RobotListResponse, RobotPositionResponse
 from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
-from shared.time import TimeUnit
 import os
 from dotenv import load_dotenv
 load_dotenv()  

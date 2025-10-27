@@ -5,6 +5,40 @@
 ## Example Snippets
 * **PUDU Map visualization example**: https://codesandbox.io/embed/open-map-render-kz5kf5
 
+### Get all Robot Positions from a Shop:
+```javascript
+async function fetchRobotPositions(shopId) {
+  try {
+    // Step 1: Fetch the list of robots
+    const robotsResponse = await fetch(`https://api.tobedefineddomain.telmekom.com/robots?shop_id=${shopId}`);
+    const robotsData = await robotsResponse.json();
+
+    // Step 2: Check if "data" property exists
+    if (robotsData.data && Array.isArray(robotsData.data.list)) {
+      const robotList = robotsData.data.list;
+
+      // Step 3: Loop through each robot and fetch its position
+      for (const robot of robotList) {
+        const sn = robot.sn;
+        const positionResponse = await fetch(`https://api.tobedefineddomain.telmekom.com/robots/get_position?sn=${sn}`);
+        const positionData = await positionResponse.json();
+
+        // Step 4: Log the position data
+        console.log(`Position for SN ${sn}:`, positionData);
+      }
+    } else {
+      console.warn("No 'data.list' found in the response.", robotsData);
+    }
+  } catch (error) {
+    console.error("Error fetching robot data:", error);
+  }
+}
+
+fetchRobotPositions("123456789");
+```
+
+
+
 ## FAQ and Vocabulary
 * **Task**: A specific work Task for a robot. Can be scheduled or contain subtasks.
 * **Command**: A modification of a Task like pausing, changing waypoints or stopping
