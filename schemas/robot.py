@@ -18,14 +18,14 @@ class RobotListData(BaseModel):
     list: List[RobotInfos]
 
 class RobotListResponse(BaseResponse):
-    data: Optional[RobotListData]
+    data: Optional[RobotListData] = None
 
 # Robot Position 
 
 class RobotPositionData(BaseModel):
-    map_name: Optional[str]
-    floor: Optional[str]
-    position: Optional[Vector3]
+    map_name: Optional[str] = None
+    floor: Optional[str] = None
+    position: Optional[Vector3] = None
 
 class RobotPositionResponse(BaseResponse):
     data: Optional[RobotPositionData] = None
@@ -41,7 +41,7 @@ class RobotCleaningTaskListBackPoint(BaseModel):
 class RobotCleaningTaskListStationConfig(BaseModel):
     id: str
     station_name: str
-    station_type: Union[int, None] = None
+    station_type: Optional[int] = None
     station_funtion: int
     map_name: str
 
@@ -57,57 +57,57 @@ class RobotCleaningTaskListItem(BaseModel):
     config: Dict[str, Any]
     floor_list: List[Dict[str, Any]]
     status: int
-    is_single_task: Union[bool, None] = None
-    task_count: Union[int, None] = None
-    task_mode: Union[int, None] = None
-    back_point: Union[RobotCleaningTaskListBackPoint, None] = None
-    pre_clean_time: Union[int, None] = None
-    is_area_connect: Union[bool, None] = None
-    station_config: Union[RobotCleaningTaskListStationConfig, None] = None
-    cleanagent_config: Union[RobotCleaningTaskListConfig, None] = None
-    is_hand_sort: Union[bool, None] = None
+    is_single_task: Optional[bool] = None
+    task_count: Optional[int] = None
+    task_mode: Optional[int] = None
+    back_point: Optional[RobotCleaningTaskListBackPoint] = None
+    pre_clean_time: Optional[int] = None
+    is_area_connect: Optional[bool] = None
+    station_config: Optional[RobotCleaningTaskListStationConfig] = None
+    cleanagent_config: Optional[RobotCleaningTaskListConfig] = None
+    is_hand_sort: Optional[bool] = None
 
 class RobotCleaningTaskListData(BaseModel):
     count: int
     item: list[RobotCleaningTaskListItem]
 
 class RobotCleaningTaskListResponse(BaseResponse):
-    data: Union[RobotCleaningTaskListData, None] = None
+    data: Optional[RobotCleaningTaskListData] = None
 
 # Robot Cleaning Detail
 
 class RobotCleaningDetailBreakPoint(BaseModel):
     index: int
     vector: Vector3
-    clean_type: Union[int, None] = None
-    start: Union[Dict[str, Any], None] = None
+    clean_type: Optional[int] = None
+    start: Optional[Dict[str, Any]] = None
 
 class RobotCleaningDetailTaskStatus(BaseModel):
     time: int
     area: int
     status: int
-    break_point: Union[RobotCleaningDetailBreakPoint, None] = None
-    percentage: Union[int, None] = None
-    remaining_time: Union[int, None] = None
-    task_area: Union[float, None] = None
-    cost_water: Union[int, None] = None
-    cost_battery: Union[int, None] = None
-    charge_count: Union[int, None] = None
+    break_point: Optional[RobotCleaningDetailBreakPoint] = None
+    percentage: Optional[int] = None
+    remaining_time: Optional[int] = None
+    task_area: Optional[float] = None
+    cost_water: Optional[int] = None
+    cost_battery: Optional[int] = None
+    charge_count: Optional[int] = None
 
 class RobotCleaningDetailCleanMode(BaseModel):
     mode: int
     report_id: str
     msg: str
     result: RobotCleaningDetailTaskStatus
-    task: Union[Dict[str, Any], None] = None
-    map: Union[Dict[str, Any], None] = None
+    task: Optional[Dict[str, Any]] = None
+    map: Optional[Dict[str, Any]] = None
     config: Dict[str, Any]
 
 class RobotCleaningDetailCleanBot(BaseModel):
     rising: int
     sewage: int
     task: int
-    clean: Union[RobotCleaningDetailCleanMode, None] = None
+    clean: Optional[RobotCleaningDetailCleanMode] = None
 
 class RobotCleaningDetailShop(BaseModel):
     id: int
@@ -124,7 +124,7 @@ class RobotCleaningDetailData(BaseModel):
     position: Vector3
 
 class RobotCleaningDetailResponse(BaseResponse):
-    data: Union[RobotCleaningDetailData, None] = None
+    data: Optional[RobotCleaningDetailData] = None
 
 # Robot Cleaning Scheduled Task List
 
@@ -142,7 +142,7 @@ class RobotCleaningScheduledTask(BaseModel):
     clean_area: float
     map: List[RobotCleaningScheduledTaskListMap]
     clean_mode: int
-    back_point: Optional[Dict[str, Any]]
+    back_point: Optional[Dict[str, Any]] = None
     clean_type: int
     mode: int
     product: str
