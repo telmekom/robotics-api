@@ -1,10 +1,7 @@
-import re
-import urllib.parse
 from fastapi import Query, APIRouter
 import requests
-from schemas.maps import *
+from schemas.maps import MapListResponse
 from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
-from shared.time import TimeUnit
 import os
 from dotenv import load_dotenv
 load_dotenv()  
@@ -14,7 +11,7 @@ router = APIRouter(
     responses={404: {"description": "Maps API for Data, Analytics and Statistics"}}
 )
 
-@router.get("/maps")
+@router.get("/maps", response_model=MapListResponse)
 def get_maps(
         shop_id: int = Query(description="Parent Shop ID"),
     ):
@@ -41,7 +38,7 @@ def get_map_detail(
         device_width: int = Query(1200, description="Device width in px", gt=0),
         device_height: int = Query(800, description="Device height in px", gt=0),
     ):
-        return { "code": 500, "message": "Not Yet Implemented"}
+        return { "code": 501, "message": "Not Yet Implemented"}
         # try:
         #     encoded_params = clean_and_encode_params({
         #         "shop_id": shop_id, 

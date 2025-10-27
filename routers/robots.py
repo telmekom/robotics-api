@@ -34,7 +34,7 @@ def get_robots(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/robots/get_position", response_model=RobotPositionResponse)
+@router.get("/robots/get-position", response_model=RobotPositionResponse)
 def get_robot_position(
         sn: str = Query(description="Robot Serial Number"),
     ):
