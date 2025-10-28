@@ -45,4 +45,20 @@ class AnalysisResponse(BaseResponse):
     data: Optional[AnalysisData] = None
 
 class CleaningAnalysisResponse(BaseResponse):
-    chart: Optional[List[AnalysisChartItem]]
+    chart: Optional[List[AnalysisChartItem]] = None
+
+class RobotAnalysisListItem(BaseModel):
+    product_code: str
+    run_count: int
+    task_time: str
+
+class RobotAnalysisChartItem(BaseModel):
+    list: Optional[List[RobotAnalysisListItem]] = None
+    run_count: Optional[int] = None
+    task_time: str
+
+class RobotAnalysisData(BaseModel):
+    chart: Optional[List[RobotAnalysisChartItem]] = None
+
+class RobotAnalysisResponse(BaseResponse):
+    data: Optional[RobotAnalysisData] = None
