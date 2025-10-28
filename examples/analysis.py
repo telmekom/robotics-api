@@ -3153,25 +3153,135 @@ statistics_shops_general_example = {
 }
 
 statistics_robots_general_example = {
-  "message": "SUCCESS",
-  "trace_id": "APID6s8FdbmWX5DPxwtN3HHWzU8WWHSk0AEtc_a908f403-55ef-459c-ad9f-3dbdc00934c6",
-  "data": {
-    "summary": {
-      "boot_count": 3,
-      "total_count": 10,
-      "bind_count": 0,
-      "active_count": 0,
-      "lively_rate": 30
-    },
-    "qoq": {
-      "boot_count": 7,
-      "total_count": 10,
-      "bind_count": 3,
-      "active_count": 4,
-      "lively_rate": 0
-    },
-    "chart": {}
-  }
+    "code": 200,
+    "message": "ok",
+    "data": {
+        "summary": {
+            "boot_count": 25,
+            "total_count": 24,
+            "bind_count": 37,
+            "active_count": 36,
+            "lively_rate": 104.17
+        },
+        "qoq": {
+            "boot_count": 0,
+            "total_count": 0,
+            "bind_count": 0,
+            "active_count": 0,
+            "lively_rate": 0
+        },
+        "qoq_percent": {
+            "active_count": 0,
+            "bind_count": 0,
+            "boot_count": 0
+        },
+        "chart": {
+            "62": {
+                "product_code": "62",
+                "product_name": "BellaBot",
+                "bind_count": 2,
+                "active_count": 1,
+                "bind_rate": 5.41,
+                "active_rate": 2.78
+            },
+            "67": {
+                "product_code": "67",
+                "product_name": "KettyBot",
+                "bind_count": 2,
+                "active_count": 2,
+                "bind_rate": 5.41,
+                "active_rate": 5.56
+            },
+            "69": {
+                "product_code": "69",
+                "product_name": "PUDU CC1",
+                "bind_count": 8,
+                "active_count": 8,
+                "bind_rate": 21.62,
+                "active_rate": 22.22
+            },
+            "73": {
+                "product_code": "73",
+                "product_name": "PuduBot2",
+                "bind_count": 2,
+                "active_count": 2,
+                "bind_rate": 5.41,
+                "active_rate": 5.56
+            },
+            "75": {
+                "product_code": "75",
+                "product_name": "PUDU SH1",
+                "bind_count": 3,
+                "active_count": 3,
+                "bind_rate": 8.11,
+                "active_rate": 8.33
+            },
+            "76": {
+                "product_code": "76",
+                "product_name": "BellaBot Pro",
+                "bind_count": 4,
+                "active_count": 4,
+                "bind_rate": 10.81,
+                "active_rate": 11.11
+            },
+            "78": {
+                "product_code": "78",
+                "product_name": "PUDU T300",
+                "bind_count": 4,
+                "active_count": 4,
+                "bind_rate": 10.81,
+                "active_rate": 11.11
+            },
+            "79": {
+                "product_code": "79",
+                "product_name": "PUDU MT1",
+                "bind_count": 4,
+                "active_count": 4,
+                "bind_rate": 10.81,
+                "active_rate": 11.11
+            },
+            "80": {
+                "product_code": "80",
+                "product_name": "PUDU CC1 Pro",
+                "bind_count": 1,
+                "active_count": 1,
+                "bind_rate": 2.7,
+                "active_rate": 2.78
+            },
+            "81": {
+                "product_code": "81",
+                "product_name": "FlashBot 2025",
+                "bind_count": 4,
+                "active_count": 4,
+                "bind_rate": 10.81,
+                "active_rate": 11.11
+            },
+            "90": {
+                "product_code": "90",
+                "product_name": "PUDU MT1 Vac",
+                "bind_count": 1,
+                "active_count": 1,
+                "bind_rate": 2.7,
+                "active_rate": 2.78
+            },
+            "97": {
+                "product_code": "97",
+                "product_name": "PUDU MT1 Max",
+                "bind_count": 1,
+                "active_count": 1,
+                "bind_rate": 2.7,
+                "active_rate": 2.78
+            },
+            "99": {
+                "product_code": "99",
+                "product_name": "PUDU T600 Underride",
+                "bind_count": 1,
+                "active_count": 1,
+                "bind_rate": 2.7,
+                "active_rate": 2.78
+            }
+        }
+    }
 }
 
 statistics_robots_operations_example = {
