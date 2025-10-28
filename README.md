@@ -1,22 +1,29 @@
 # Telmekom Robotics API
 
-## Instructions
-
 ## Test Entities
 
 ### Shops
 
-* **Telmekom Fiere/Messe**: ID: 520400008
+* **Telmekom Fiere/Messe**: 
+  * **ID:** 520400008
 
 ### Cleaning Robots
 
-* **MT1**: SN: 866024C03050001, MacAddress: 98:A1:4A:38:C4:DF
-* **CC1Pro**: SN: 8880F5811070003, MacAddress: 60:32:3B:0D:A0:35
+* **MT1**: 
+  * **SN:** 866024C03050001 
+  * **MacAddress:** 98:A1:4A:38:C4:DF
+* **CC1Pro**: 
+  * **SN:** 8880F5811070003
+  * **MacAddress:** 60:32:3B:0D:A0:35
 
 ### Delivery Robots
 
-* **FlashBot 1**: SN: 8FD014C03050001, MacAddress: 98:A1:4A:38:C5:48
-* **FlashBot 2**: SN: 8FD034C03050001, MacAddress: 98:A1:4A:38:C8:12
+* **FlashBot 1**: 
+  * **SN:** 8FD014C03050001
+  * **MacAddress:** 98:A1:4A:38:C5:48
+* **FlashBot 2**: 
+  * **SN:** 8FD034C03050001
+  * **MacAddress:** 98:A1:4A:38:C8:12
 
 ## Example Snippets
 * **PUDU Map visualization example**: https://codesandbox.io/embed/open-map-render-kz5kf5
