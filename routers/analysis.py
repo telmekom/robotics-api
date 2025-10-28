@@ -274,63 +274,63 @@ def get_analysis_shops_solicit(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
   
-@router.get("/analysis/shops/grid", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - grid click")
-def get_analysis_shops_grid(
-        start_time: int = Query(description="Unix timestamp", ge=0),
-        end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
-        time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
-    ):
-        try:
-            encoded_params = clean_and_encode_params({
-                "start_time": start_time, 
-                "end_time": end_time, 
-                "shop_id": shop_id, 
-                "timezone_offset": timezone_offset,
-                "time_unit": time_unit.value
-            })
+# @router.get("/analysis/shops/grid", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - grid click")
+# def get_analysis_shops_grid(
+#         start_time: int = Query(description="Unix timestamp", ge=0),
+#         end_time: int = Query(description="Unix timestamp", ge=0),
+#         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+#         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
+#         timezone_offset: int = 0
+#     ):
+#         try:
+#             encoded_params = clean_and_encode_params({
+#                 "start_time": start_time, 
+#                 "end_time": end_time, 
+#                 "shop_id": shop_id, 
+#                 "timezone_offset": timezone_offset,
+#                 "time_unit": time_unit.value
+#             })
 
-            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/analysis/task/grid?{encoded_params}')
-            hmac_headers = build_headers_with_hmac(**request_data)
-            response = requests.get(request_data["url"], headers=hmac_headers)
+#             request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/analysis/task/grid?{encoded_params}')
+#             hmac_headers = build_headers_with_hmac(**request_data)
+#             response = requests.get(request_data["url"], headers=hmac_headers)
                 
-            if response.status_code == 200:
-                return response.json()
-            else:
-                return { "code": response.status_code, "message": response.text}
-        except Exception as e:
-            return {"status": "ERROR", "message": str(e)}
+#             if response.status_code == 200:
+#                 return response.json()
+#             else:
+#                 return { "code": response.status_code, "message": response.text}
+#         except Exception as e:
+#             return {"status": "ERROR", "message": str(e)}
   
-@router.get("/analysis/shops/ad", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - advertising mode")
-def get_analysis_shops_ad(
-        start_time: int = Query(description="Unix timestamp", ge=0),
-        end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
-        time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0,
-        ad_id: int | None = Query(None, description="If left empty it will return data for all ads", ge=0)
-    ):
-        try:
-            encoded_params = clean_and_encode_params({
-                "start_time": start_time, 
-                "end_time": end_time, 
-                "shop_id": shop_id, 
-                "timezone_offset": timezone_offset,
-                "time_unit": time_unit.value,
-                "ad_id": ad_id
-            })
+# @router.get("/analysis/shops/ad", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - advertising mode")
+# def get_analysis_shops_ad(
+#         start_time: int = Query(description="Unix timestamp", ge=0),
+#         end_time: int = Query(description="Unix timestamp", ge=0),
+#         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+#         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
+#         timezone_offset: int = 0,
+#         ad_id: int | None = Query(None, description="If left empty it will return data for all ads", ge=0)
+#     ):
+#         try:
+#             encoded_params = clean_and_encode_params({
+#                 "start_time": start_time, 
+#                 "end_time": end_time, 
+#                 "shop_id": shop_id, 
+#                 "timezone_offset": timezone_offset,
+#                 "time_unit": time_unit.value,
+#                 "ad_id": ad_id
+#             })
 
-            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/analysis/task/ad?{encoded_params}')
-            hmac_headers = build_headers_with_hmac(**request_data)
-            response = requests.get(request_data["url"], headers=hmac_headers)
+#             request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/analysis/task/ad?{encoded_params}')
+#             hmac_headers = build_headers_with_hmac(**request_data)
+#             response = requests.get(request_data["url"], headers=hmac_headers)
                 
-            if response.status_code == 200:
-                return response.json()
-            else:
-                return { "code": response.status_code, "message": response.text}
-        except Exception as e:
-            return {"status": "ERROR", "message": str(e)}
+#             if response.status_code == 200:
+#                 return response.json()
+#             else:
+#                 return { "code": response.status_code, "message": response.text}
+#         except Exception as e:
+#             return {"status": "ERROR", "message": str(e)}
         
 @router.get("/analysis/shops/recovery", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - return mode")
 def get_analysis_shops_recovery(

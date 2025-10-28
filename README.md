@@ -2,6 +2,22 @@
 
 ## Instructions
 
+## Test Entities
+
+### Shops
+
+* **Telmekom Fiere/Messe**: ID: 520400008
+
+### Cleaning Robots
+
+* **MT1**: SN: 866024C03050001, MacAddress: 98:A1:4A:38:C4:DF
+* **CC1Pro**: SN: 8880F5811070003, MacAddress: 60:32:3B:0D:A0:35
+
+### Delivery Robots
+
+* **FlashBot 1**: SN: 8FD014C03050001, MacAddress: 98:A1:4A:38:C5:48
+* **FlashBot 2**: SN: 8FD034C03050001, MacAddress: 98:A1:4A:38:C8:12
+
 ## Example Snippets
 * **PUDU Map visualization example**: https://codesandbox.io/embed/open-map-render-kz5kf5
 
@@ -55,15 +71,12 @@ fetchRobotPositions("123456789");
 
 * **Delivery-Task**: Delivers to (multiple) destination point in a single trip. 
 * **Cruise-Task**: "Patrol"-Mode. It circles between predefined points f.ex. for self-service drinks
-* **Interactive-Task**: Robot needs feedback / interaction (?)
+* **Interactive-/Customer Attraction-Task**: Robot needs feedback / interaction
 * **Customer Collection-/Solicit-Task**: The robot collects customer that then can interact with the robot
-* **Grid-Task**: (?) Grid generation?
-* **Advertising-Task**: ???
-* **Return-/Recovery-Task**: ???
 * **Pickup-/Greeter-/Lead-Task**: The robot leads customers to their tables. Then, it automatically returns to the greeting location.
 * **Return-/Recovery-Task**: The robot directly returns to the pickup location or the departure location.
-* **Call-Task**: (?) The robot makes a call with a predefined message
-* **Lifting-Task**: (?) The robot fetches from point A and delivers it to point B
+* **Call-Task**: Send Robot to predefined position (from App, Watch, Pager)
+* **Lifting-Task**: The robot fetches from point A and delivers it to point B
 
 * **Unit of Measurements**: Area is in m², distance in km and duration in h
 
