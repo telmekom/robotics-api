@@ -4,14 +4,23 @@ from schemas.maps import MapListResponse
 from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
 import os
 from dotenv import load_dotenv
+from examples.maps import maps_example, maps_detail_example
 load_dotenv()  
 
 router = APIRouter(
     tags=["Maps"],
-    responses={404: {"description": "Maps API for Data, Analytics and Statistics"}}
 )
 
-@router.get("/maps", response_model=MapListResponse)
+@router.get("/maps", response_model=MapListResponse, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": maps_example
+            }
+        }
+    },
+})
 def get_maps(
         shop_id: int = Query(description="Parent Shop ID"),
     ):
@@ -31,7 +40,16 @@ def get_maps(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/maps/details")
+@router.get("/maps/details", responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": maps_detail_example
+            }
+        }
+    },
+})
 def get_map_detail(
         shop_id: int = Query(description="Parent Shop ID"),
         map_name: str = Query(description="map name"),
