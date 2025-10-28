@@ -4,13 +4,23 @@ from schemas.robot import RobotCleaningDetailResponse, RobotCleaningScheduledTas
 from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
 import os
 from dotenv import load_dotenv
+from examples.robots import robots_example
 load_dotenv()  
 
 router = APIRouter(
     tags=["Robots"],
 )
 
-@router.get("/robots", response_model=RobotListResponse)
+@router.get("/robots", response_model=RobotListResponse, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": robots_example
+            }
+        }
+    },
+})
 def get_robots(
         limit: int = Query(10, ge=1), 
         offset: int = Query(0, ge=0),
