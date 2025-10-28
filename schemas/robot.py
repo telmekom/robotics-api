@@ -83,7 +83,7 @@ class RobotCleaningDetailBreakPoint(BaseModel):
 
 class RobotCleaningDetailTaskStatus(BaseModel):
     time: int
-    area: int
+    area: float
     status: int
     break_point: Optional[RobotCleaningDetailBreakPoint] = None
     percentage: Optional[int] = None

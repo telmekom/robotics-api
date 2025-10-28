@@ -4,7 +4,7 @@ from schemas.robot import RobotCleaningDetailResponse, RobotCleaningScheduledTas
 from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
 import os
 from dotenv import load_dotenv
-from examples.robots import robots_example
+from examples.robots import robots_example, robots_cleaning_tasks_example, robot_cleaning_detail_example
 load_dotenv()  
 
 router = APIRouter(
@@ -64,7 +64,16 @@ def get_robot_position(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/robots/cleaning/tasks", response_model=RobotCleaningTaskListResponse)
+@router.get("/robots/cleaning/tasks", response_model=RobotCleaningTaskListResponse, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": robots_cleaning_tasks_example
+            }
+        }
+    },
+})
 def get_robot_cleaning_tasks(
         shop_id: int | None = Query(None, description="Shop/Store ID - this or sn must be specified"),
         sn: str | None = Query(None, description="Robot Serial Number - this or shop_id must be specified"),
@@ -88,7 +97,16 @@ def get_robot_cleaning_tasks(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
         
-@router.get("/robots/cleaning/detail", response_model=RobotCleaningDetailResponse)
+@router.get("/robots/cleaning/detail", response_model=RobotCleaningDetailResponse, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": robot_cleaning_detail_example
+            }
+        }
+    },
+})
 def get_robot_cleaning_detail(
         sn: str = Query(description="Robot Serial Number"),
     ):
