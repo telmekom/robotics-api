@@ -3,7 +3,13 @@ from pydantic import BaseModel
 
 from schemas.base import BaseResponse, Vector3
 
-# Robot List
+
+class RobotPositionData(BaseModel):
+    map_name: Optional[str] = None
+    point_name: Optional[str] = None
+    floor: Optional[str] = None
+    position: Optional[Vector3] = None
+    point_id: Optional[str] = None
 
 class RobotInfos(BaseModel):
     mac: str
@@ -11,6 +17,9 @@ class RobotInfos(BaseModel):
     shop_name: str
     sn: str
     product_code: str
+
+
+# Robot List
 
 class RobotListData(BaseModel):
     count: int
@@ -21,21 +30,10 @@ class RobotListResponse(BaseResponse):
 
 # Robot Position 
 
-class RobotPositionData(BaseModel):
-    map_name: Optional[str] = None
-    floor: Optional[str] = None
-    position: Optional[Vector3] = None
-
 class RobotPositionResponse(BaseResponse):
     data: Optional[RobotPositionData] = None
 
 # Robot Cleaning Task List
-
-class RobotCleaningTaskListBackPoint(BaseModel):
-    floor: str
-    map_name: str
-    point_name: str
-    point_id: str
 
 class RobotCleaningTaskListStationConfig(BaseModel):
     id: str
@@ -59,7 +57,7 @@ class RobotCleaningTaskListItem(BaseModel):
     is_single_task: Optional[bool] = None
     task_count: Optional[int] = None
     task_mode: Optional[int] = None
-    back_point: Optional[RobotCleaningTaskListBackPoint] = None
+    back_point: Optional[RobotPositionData] = None
     pre_clean_time: Optional[int] = None
     is_area_connect: Optional[bool] = None
     station_config: Optional[RobotCleaningTaskListStationConfig] = None
