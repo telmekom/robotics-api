@@ -38,6 +38,7 @@ ENV/
 *.swp
 *.swo
 *~
+*.tar
 
 # Database
 *.db

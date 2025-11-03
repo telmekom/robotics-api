@@ -1,8 +1,7 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 from pydantic import BaseModel
 
 from schemas.base import BaseResponse, Vector3
-
 
 class RobotPositionData(BaseModel):
     map_name: Optional[str] = None
@@ -17,7 +16,6 @@ class RobotInfos(BaseModel):
     shop_name: str
     sn: str
     product_code: str
-
 
 # Robot List
 
@@ -163,4 +161,4 @@ class RobotCleaningScheduledTaskData(BaseModel):
     list: List[RobotCleaningScheduledTaskCron]
 
 class RobotCleaningScheduledTaskResponse(BaseResponse):
-    data: Union[RobotCleaningScheduledTaskData, None] = None
+    data: Optional[RobotCleaningScheduledTaskData] = None

@@ -33,7 +33,7 @@
 async function fetchRobotPositions(shopId) {
   try {
     // Step 1: Fetch the list of robots
-    const robotsResponse = await fetch(`https://api.tobedefineddomain.telmekom.com/robots?shop_id=${shopId}`);
+    const robotsResponse = await fetch(`http://91.212.160.30:8000/robots?shop_id=${shopId}`);
     const robotsData = await robotsResponse.json();
 
     // Step 2: Check if "data" property exists
@@ -43,7 +43,7 @@ async function fetchRobotPositions(shopId) {
       // Step 3: Loop through each robot and fetch its position
       for (const robot of robotList) {
         const sn = robot.sn;
-        const positionResponse = await fetch(`https://api.tobedefineddomain.telmekom.com/robots/get_position?sn=${sn}`);
+        const positionResponse = await fetch(`http://91.212.160.30:8000/robots/get-position?sn=${sn}`);
         const positionData = await positionResponse.json();
 
         // Step 4: Log the position data
@@ -57,10 +57,8 @@ async function fetchRobotPositions(shopId) {
   }
 }
 
-fetchRobotPositions("123456789");
+fetchRobotPositions(520400008);
 ```
-
-
 
 ## FAQ and Vocabulary
 * **Task**: A specific work Task for a robot. Can be scheduled or contain subtasks.
@@ -88,7 +86,7 @@ fetchRobotPositions("123456789");
 * **Unit of Measurements**: Area is in m², distance in km and duration in h
 
 ## Related Links
-* **Telmekom API Documentation**: https://URL/TO/SERVER/docs
+* **Telmekom API Documentation**: http://91.212.160.30:8000/docs
 * **PUDU Robots**: https://www.pudurobotics.com/en/products
 * **PUDU Accessories**: https://www.pudurobotics.com/en/accessory
 * **PUDU Cloud API the Telmekom API is based on**: https://open.pudutech.com/
