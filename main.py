@@ -1,20 +1,26 @@
 import os
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from routers import analysis, maps, shops, robots
 import requests
-from shared.pudu_api_helper import build_headers_with_hmac
+from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, header_scheme
 from dotenv import load_dotenv
+
 load_dotenv()  
 
 
 app = FastAPI()
+
+
 app.include_router(shops.router)
 app.include_router(robots.router)
 app.include_router(maps.router)
 app.include_router(analysis.router)
 
 @app.get("/healthcheck", description="Basic server availability check")
-def health_check():
+def health_check(key: str = Depends(header_scheme)):
+    if (key != HACKATHON_API_KEY):
+        return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
     try:
         request_data = {
             "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/healthCheck',

@@ -1,12 +1,12 @@
-from fastapi import Query, APIRouter
+from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.analysis import AnalysisResponse, CleaningAnalysisResponse, RobotAnalysisResponse
 from schemas.statistics import RobotOpsStatisticsResponse, RobotStatisticsResponse, ShopStatisticsResponse
-from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
+from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme
 from shared.time import TimeUnit
 import os
-from dotenv import load_dotenv
 from examples.analysis import *
+from dotenv import load_dotenv
 load_dotenv()  
 
 router = APIRouter(
@@ -30,8 +30,12 @@ def get_analysis_shops_general(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -68,8 +72,12 @@ def get_analysis_shops_cleaning_detail(
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         clean_mode: int = Query(0, description="Clean Mode (0: all, 1: scrubber, 2: sweeping)", ge=0, le=2),
         sub_mode: int = Query(-1, description="Sub Clean Mode (-1: all, 0: custom, 1: carpet vacuuming, 3: silent dust pushing)", ge=-1, le=3),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -108,8 +116,12 @@ def get_analysis_shops_cleaning(
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         clean_mode: int = Query(0, description="Clean Mode (0: all, 1: scrubber, 2: sweeping)", ge=0, le=2),
         sub_mode: int = Query(-1, description="Sub Clean Mode (-1: all, 0: custom, 1: carpet vacuuming, 3: silent dust pushing)", ge=-1, le=3),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -147,8 +159,12 @@ def get_analysis_shops_industrial(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -184,8 +200,12 @@ def get_analysis_shops_delivery(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0),  
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -221,8 +241,12 @@ def get_analysis_shops_cruise(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -258,8 +282,12 @@ def get_analysis_shops_lead(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -295,8 +323,12 @@ def get_analysis_shops_solicit(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -333,8 +365,12 @@ def get_analysis_shops_recovery(
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
-        ad_id: int | None = Query(None, description="If left empty it will return data for all ads", ge=0)
+        ad_id: int | None = Query(None, description="If left empty it will return data for all ads", ge=0),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -371,8 +407,12 @@ def get_analysis_shops_call(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -408,8 +448,12 @@ def get_analysis_robot_general(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
-        timezone_offset: int = 0
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -447,7 +491,11 @@ def get_statistics_shops_general(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
         timezone_offset: int = Query(0, description="GMT offset (GMT-12 to GMT+14)", ge=-12, le=14),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -482,7 +530,11 @@ def get_statistics_robots_general(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int = Query(description="Robot Shop ID"),
         timezone_offset: int = Query(0, description="GMT offset (GMT-12 to GMT+14)", ge=-12, le=14),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -517,7 +569,10 @@ def get_statistics_robots_operations(
         end_time: int = Query(description="Unix timestamp", ge=0),
         shop_id: int = Query(description="Robot Shop ID"),
         timezone_offset: int = Query(0, description="GMT offset (GMT-12 to GMT+14)", ge=-12, le=14),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
 
         try:
             encoded_params = clean_and_encode_params({

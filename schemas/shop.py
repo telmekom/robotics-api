@@ -16,7 +16,7 @@ class ShopListData(BaseModel):
     list: List[Shop]
 
 class ShopListResponse(BaseResponse):
-    data: ShopListData
+    data: Optional[ShopListData] = None
 
 # Logs
 

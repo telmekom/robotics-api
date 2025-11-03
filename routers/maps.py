@@ -1,7 +1,7 @@
-from fastapi import Query, APIRouter
+from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.maps import MapListResponse
-from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
+from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme
 import os
 from dotenv import load_dotenv
 from examples.maps import maps_example, maps_detail_example
@@ -23,7 +23,11 @@ router = APIRouter(
 })
 def get_maps(
         shop_id: int = Query(description="Parent Shop ID"),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "shop_id": shop_id, 
@@ -55,7 +59,11 @@ def get_map_detail(
         map_name: str = Query(description="map name"),
         device_width: int = Query(1200, description="Device width in px", gt=0),
         device_height: int = Query(800, description="Device height in px", gt=0),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         return { "code": 501, "message": "Not Yet Implemented"}
         # try:
         #     encoded_params = clean_and_encode_params({

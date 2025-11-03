@@ -32,8 +32,14 @@
 ```javascript
 async function fetchRobotPositions(shopId) {
   try {
+    const headers = {
+      'x-key': 'ABC_API_KEY_DEF' // Replace with your actual x-key
+    };
+
     // Step 1: Fetch the list of robots
-    const robotsResponse = await fetch(`http://91.212.160.30:8000/robots?shop_id=${shopId}`);
+    const robotsResponse = await fetch(`http://91.212.160.30:8000/robots?shop_id=${shopId}`, {
+      headers
+    });
     const robotsData = await robotsResponse.json();
 
     // Step 2: Check if "data" property exists
@@ -43,7 +49,9 @@ async function fetchRobotPositions(shopId) {
       // Step 3: Loop through each robot and fetch its position
       for (const robot of robotList) {
         const sn = robot.sn;
-        const positionResponse = await fetch(`http://91.212.160.30:8000/robots/get-position?sn=${sn}`);
+        const positionResponse = await fetch(`http://91.212.160.30:8000/robots/get-position?sn=${sn}`, {
+          headers
+        });
         const positionData = await positionResponse.json();
 
         // Step 4: Log the position data

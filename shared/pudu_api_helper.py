@@ -2,12 +2,15 @@ import base64
 import datetime
 import hmac
 import hashlib
-from urllib.request import *
+
 from urllib.parse import urlencode, urlparse
 import os
 from dotenv import load_dotenv
+from fastapi.security import APIKeyHeader
 load_dotenv()  
 
+HACKATHON_API_KEY = os.getenv("HACKATHON_API_KEY")
+header_scheme = APIKeyHeader(name="x-key")
 
 def generate_get_header_block(url: str):
     return {

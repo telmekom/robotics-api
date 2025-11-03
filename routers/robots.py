@@ -1,7 +1,7 @@
-from fastapi import Query, APIRouter
+from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.robot import RobotCleaningDetailResponse, RobotCleaningScheduledTaskResponse, RobotCleaningTaskListResponse, RobotListResponse, RobotPositionResponse
-from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
+from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme
 import os
 from dotenv import load_dotenv
 from examples.robots import robots_example, robots_cleaning_tasks_example, robot_cleaning_detail_example
@@ -25,7 +25,11 @@ def get_robots(
         limit: int = Query(10, ge=1), 
         offset: int = Query(0, ge=0),
         shop_id: int | None = Query(None, description="Parent Shop ID, all robots if not specified"),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+
         try:
             encoded_params = clean_and_encode_params({
                     "limit": limit, 
@@ -47,7 +51,11 @@ def get_robots(
 @router.get("/robots/get-position", response_model=RobotPositionResponse)
 def get_robot_position(
         sn: str = Query(description="Robot Serial Number"),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+
         try:
             encoded_params = clean_and_encode_params({
                 "sn": sn, 
@@ -77,9 +85,13 @@ def get_robot_position(
 def get_robot_cleaning_tasks(
         shop_id: int | None = Query(None, description="Shop/Store ID - this or sn must be specified"),
         sn: str | None = Query(None, description="Robot Serial Number - this or shop_id must be specified"),
+        key: str = Depends(header_scheme)
         # product: list[str] | None = Query(description="Product Type - can be used for CleanBot, MT1, MT1Pro, MT1Max"),
         # mode: list[int] | None = Query(description="1: manual, 2: automatic, 3: inspection+mixed"),
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                  "shop_id": shop_id,
@@ -109,7 +121,11 @@ def get_robot_cleaning_tasks(
 })
 def get_robot_cleaning_detail(
         sn: str = Query(description="Robot Serial Number"),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "sn": sn, 
@@ -131,7 +147,11 @@ def get_robot_cleaning_scheduled_task_list(
         sn: str = Query(description="Robot Serial Number"),
         limit: int = Query(10, ge=1), 
         offset: int = Query(0, ge=0),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "sn": sn, 

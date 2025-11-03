@@ -1,7 +1,7 @@
-from fastapi import Query, APIRouter
+from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.shop import RobotChargeResponse, RobotErrorResponse, RobotLogResponse, ShopListResponse
-from shared.pudu_api_helper import build_headers_with_hmac, clean_and_encode_params, generate_get_header_block
+from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme
 import os
 from dotenv import load_dotenv
 from examples.shops import shops_example, shops_robotstatus_example, shops_roboterrors_example, shops_robotcharges_example
@@ -23,8 +23,12 @@ router = APIRouter(
 })
 def get_shops(
         limit: int = Query(10, ge=1), 
-        offset: int = Query(0, ge=0)
+        offset: int = Query(0, ge=0),
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+
         encoded_params = clean_and_encode_params({
             "limit": limit, 
             "offset": offset, 
@@ -61,7 +65,11 @@ def get_shops_robot_status(
         check_step: str | None = Query(None, description="f.ex. CheckCAN, CheckESP, CheckRGBD, CheckLidar, CheckMap, Finish"), 
         is_success: int | None = Query(None, description=" 0: failed (with exception), 1: succeeded, -1 did not filter", examples=[0, 1, -1]),
         timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         encoded_params = clean_and_encode_params({
             "start_time": start_time, 
             "end_time": end_time, 
@@ -104,7 +112,11 @@ def get_shops_robot_errors(
         error_levels: str | None = Query(None, description="Fault level screening, multiple separated by commas. (Fatal|Error|Warning|Event"), 
         error_types: str | None = Query(None, description="Fault type filtering, multiple separated by commas (LostBattery|LostCamera|LostCAN|LostIMU|LostLidar|LostLocalization|LostRGBD|WheelErrorLeft|WheelErrorRight)", examples=[0, 1, -1]),
         timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         encoded_params = clean_and_encode_params({
             "start_time": start_time, 
             "end_time": end_time, 
@@ -145,7 +157,11 @@ def get_shops_robot_charges(
         offset: int = Query(0, ge=0),
         limit: int = Query(10, ge=1), 
         timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
     ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        
         encoded_params = clean_and_encode_params({
             "start_time": start_time, 
             "end_time": end_time, 
