@@ -11,7 +11,7 @@ router = APIRouter(
     tags=["Robots"],
 )
 
-@router.get("/robots", response_model=RobotListResponse, responses={
+@router.get("/robots", response_model=RobotListResponse, name="Robot List, filtered by Store", description="",  responses={
     200: {
         "description": "Success",
         "content": {
@@ -48,7 +48,7 @@ def get_robots(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/robots/get-position", response_model=RobotPositionResponse)
+@router.get("/robots/get-position", name="Robot Position on Map", description="", response_model=RobotPositionResponse)
 def get_robot_position(
         sn: str = Query(description="Robot Serial Number"),
         key: str = Depends(header_scheme)
@@ -72,7 +72,7 @@ def get_robot_position(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/robots/cleaning/tasks", response_model=RobotCleaningTaskListResponse, responses={
+@router.get("/robots/cleaning/tasks", name="Cleaning Task-List", description="", response_model=RobotCleaningTaskListResponse, responses={
     200: {
         "description": "Success",
         "content": {
@@ -109,7 +109,7 @@ def get_robot_cleaning_tasks(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
         
-@router.get("/robots/cleaning/detail", response_model=RobotCleaningDetailResponse, responses={
+@router.get("/robots/cleaning/detail", name="Detailed List of Cleaning Tasks per Robot", description="",  response_model=RobotCleaningDetailResponse, responses={
     200: {
         "description": "Success",
         "content": {
@@ -142,7 +142,7 @@ def get_robot_cleaning_detail(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/robots/cleaning/scheduled-tasks", response_model=RobotCleaningScheduledTaskResponse)
+@router.get("/robots/cleaning/scheduled-tasks", name="Scheduled Cleaning Task-List", description="", response_model=RobotCleaningScheduledTaskResponse)
 def get_robot_cleaning_scheduled_task_list(
         sn: str = Query(description="Robot Serial Number"),
         limit: int = Query(10, ge=1), 

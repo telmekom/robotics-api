@@ -11,7 +11,7 @@ router = APIRouter(
     tags=["Maps"],
 )
 
-@router.get("/maps", response_model=MapListResponse, responses={
+@router.get("/maps", response_model=MapListResponse, name="Map List", description="", responses={
     200: {
         "description": "Success",
         "content": {
@@ -44,7 +44,7 @@ def get_maps(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/maps/details", responses={
+@router.get("/maps/details", name="Map Details", description="", responses={
     200: {
         "description": "Success",
         "content": {
@@ -56,7 +56,7 @@ def get_maps(
 })
 def get_map_detail(
         shop_id: int = Query(description="Parent Shop ID"),
-        map_name: str = Query(description="map name"),
+        map_name: str = Query(description="Map Name - used as Identifier"),
         device_width: int = Query(1200, description="Device width in px", gt=0),
         device_height: int = Query(800, description="Device height in px", gt=0),
         key: str = Depends(header_scheme)
