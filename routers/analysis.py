@@ -5,7 +5,7 @@ from schemas.statistics import RobotOpsStatisticsResponse, RobotStatisticsRespon
 from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme
 from shared.time import TimeUnit
 import os
-from examples.analysis import *
+from examples.analysis import analysis_shops_general_example, analysis_shops_cleaning_detail_example,analysis_shops_cleaning_example, analysis_shops_industrial_example, analysis_shops_delivery_example, analysis_shops_cruise_example, analysis_shops_lead_example, analysis_shops_solicit_example, analysis_shops_recovery_example, analysis_shops_call_example, analysis_robot_general_example, statistics_shops_general_example, statistics_robots_general_example, statistics_robots_operations_example
 from dotenv import load_dotenv
 load_dotenv()  
 
@@ -15,7 +15,7 @@ router = APIRouter(
 
 ### ANALYSIS ENDPOINTS ###
 
-@router.get("/analysis/shops/general", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Store analytics", responses={
+@router.get("/analysis/shops/general", response_model_exclude_none=True, response_model=AnalysisResponse, name="General Analysis", description="PUDU-Annotation: Store analytics", responses={
     200: {
         "description": "Success",
         "content": {
@@ -56,7 +56,7 @@ def get_analysis_shops_general(
         except Exception as e:
             return {"code": "UKN", "message": str(e)}
 
-@router.get("/analysis/shops/cleaning/detail", response_model_exclude_none=True, response_model=CleaningAnalysisResponse, name="PUDU-Annotation: Machine Task Analysis [Cleaning Line] - Cleaning Mode Working Session Distribution", responses={
+@router.get("/analysis/shops/cleaning/detail", response_model_exclude_none=True, response_model=CleaningAnalysisResponse, name="Cleaning Task Analysis in Detail", description="PUDU-Annotation: Machine Task Analysis [Cleaning Line] - Cleaning Mode Working Session Distribution", responses={
     200: {
         "description": "Success",
         "content": {
@@ -99,7 +99,7 @@ def get_analysis_shops_cleaning_detail(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/analysis/shops/cleaning", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine Task Analysis [Cleaning Line] - Cleaning Mode", responses={
+@router.get("/analysis/shops/cleaning", response_model_exclude_none=True, response_model=AnalysisResponse, name="Cleaning Task Analysis", description="PUDU-Annotation: Machine Task Analysis [Cleaning Line] - Cleaning Mode", responses={
     200: {
         "description": "Success",
         "content": {
@@ -144,7 +144,7 @@ def get_analysis_shops_cleaning(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
         
-@router.get("/analysis/shops/industrial", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine Task Analysis[Industrial Line] - Jacking Mode", responses={
+@router.get("/analysis/shops/industrial", response_model_exclude_none=True, response_model=AnalysisResponse, name="Industrial Task Analysis", description="PUDU-Annotation: Machine Task Analysis[Industrial Line] - Jacking Mode", responses={
     200: {
         "description": "Success",
         "content": {
@@ -185,7 +185,7 @@ def get_analysis_shops_industrial(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
    
-@router.get("/analysis/shops/delivery", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - distribution mode", responses={
+@router.get("/analysis/shops/delivery", response_model_exclude_none=True, response_model=AnalysisResponse, name="Delivery Task Analysis", description="PUDU-Annotation: Machine task analysis [distribution line] - distribution mode", responses={
     200: {
         "description": "Success",
         "content": {
@@ -226,7 +226,7 @@ def get_analysis_shops_delivery(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
   
-@router.get("/analysis/shops/cruise", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine Mission Analysis [Distribution Line] - Cruise Mode", responses={
+@router.get("/analysis/shops/cruise", response_model_exclude_none=True, response_model=AnalysisResponse, name="Cruising Task Analysis", description="PUDU-Annotation: Machine Mission Analysis [Distribution Line] - Cruise Mode", responses={
     200: {
         "description": "Success",
         "content": {
@@ -267,7 +267,7 @@ def get_analysis_shops_cruise(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
   
-@router.get("/analysis/shops/lead", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine Mission Analysis [Distribution Line] - Lead Mode", responses={
+@router.get("/analysis/shops/lead", response_model_exclude_none=True, response_model=AnalysisResponse, name="Leading Task Analysis", description="PUDU-Annotation: Machine Mission Analysis [Distribution Line] - Lead Mode", responses={
     200: {
         "description": "Success",
         "content": {
@@ -308,7 +308,7 @@ def get_analysis_shops_lead(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
   
-@router.get("/analysis/shops/solicit", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - customer collection mode", responses={
+@router.get("/analysis/shops/solicit", response_model_exclude_none=True, response_model=AnalysisResponse, name="Solicit Task Analysis", description="PUDU-Annotation: Machine task analysis [distribution line] - customer collection mode", responses={
     200: {
         "description": "Success",
         "content": {
@@ -349,7 +349,7 @@ def get_analysis_shops_solicit(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
   
-@router.get("/analysis/shops/recovery", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine task analysis [distribution line] - return mode", responses={
+@router.get("/analysis/shops/recovery", response_model_exclude_none=True, response_model=AnalysisResponse, name="Recovery Task Analysis", description="PUDU-Annotation: Machine task analysis [distribution line] - return mode", responses={
     200: {
         "description": "Success",
         "content": {
@@ -392,7 +392,7 @@ def get_analysis_shops_recovery(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
   
-@router.get("/analysis/shops/call", response_model_exclude_none=True, response_model=AnalysisResponse, name="PUDU-Annotation: Machine Task Analysis [distribution Line] - Call Pattern", responses={
+@router.get("/analysis/shops/call", response_model_exclude_none=True, response_model=AnalysisResponse, name="Calling Task Analysis", description="PUDU-Annotation: Machine Task Analysis [distribution Line] - Call Pattern", responses={
     200: {
         "description": "Success",
         "content": {
@@ -433,7 +433,7 @@ def get_analysis_shops_call(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/analysis/robot/general", response_model_exclude_none=True, response_model=RobotAnalysisResponse, name="PUDU-Annotation: Machine run analysis", responses={
+@router.get("/analysis/robot/general", response_model_exclude_none=True, response_model=RobotAnalysisResponse, name="Robot Analysis", description="PUDU-Annotation: Machine run analysis", responses={
     200: {
         "description": "Success",
         "content": {
@@ -476,7 +476,7 @@ def get_analysis_robot_general(
 
 ### STATISTICS ENDPOINTS ###
 
-@router.get("/statistics/shops/general", response_model_exclude_none=True, response_model=ShopStatisticsResponse, name="PUDU-Annotation: Store overview", responses={
+@router.get("/statistics/shops/general", response_model_exclude_none=True, response_model=ShopStatisticsResponse, name="Shop Statistics and Graphs", description="PUDU-Annotation: Store overview", responses={
     200: {
         "description": "Success",
         "content": {
@@ -515,7 +515,7 @@ def get_statistics_shops_general(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/statistics/robots/general", response_model_exclude_none=True, response_model=RobotStatisticsResponse, name="PUDU-Annotation: Overview of the machine", responses={
+@router.get("/statistics/robots/general", response_model_exclude_none=True, response_model=RobotStatisticsResponse, name="Robot Statistics and Graphs", description="PUDU-Annotation: Overview of the machine", responses={
     200: {
         "description": "Success",
         "content": {
@@ -554,7 +554,7 @@ def get_statistics_robots_general(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
         
-@router.get("/statistics/robots/operations", response_model_exclude_none=True, response_model=RobotOpsStatisticsResponse, name="PUDU-Annotation: Overview of machine operation", responses={
+@router.get("/statistics/robots/operations", response_model_exclude_none=True, response_model=RobotOpsStatisticsResponse, name="Robot Operation Statistics", description="PUDU-Annotation: Overview of machine operation", responses={
     200: {
         "description": "Success",
         "content": {
