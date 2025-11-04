@@ -8,10 +8,10 @@ from examples.shops import shops_example, shops_robotstatus_example, shops_robot
 load_dotenv()  
 
 router = APIRouter(
-    tags=["Shops"],
+    tags = ["Shops/Stores"],
 )
 
-@router.get("/shops", response_model=ShopListResponse, responses={
+@router.get("/shops", response_model=ShopListResponse, name="Shop/Store List", description="", responses={
     200: {
         "description": "Success",
         "content": {
@@ -46,7 +46,7 @@ def get_shops(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/shops/robot-status", response_model=RobotLogResponse, responses={
+@router.get("/shops/robot-status", response_model=RobotLogResponse, name="Robot Hardware Status", description="", responses={
     200: {
         "description": "Success",
         "content": {
@@ -93,7 +93,7 @@ def get_shops_robot_status(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/shops/robot-errors", response_model=RobotErrorResponse, responses={
+@router.get("/shops/robot-errors", response_model=RobotErrorResponse, name="Robot Hardware Errors", description="", responses={
     200: {
         "description": "Success",
         "content": {
@@ -140,7 +140,7 @@ def get_shops_robot_errors(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/shops/robot-charges", response_model=RobotChargeResponse, responses={
+@router.get("/shops/robot-charges", response_model=RobotChargeResponse, name="Robot Battery Data", description="", responses={
     200: {
         "description": "Success",
         "content": {
@@ -182,45 +182,3 @@ def get_shops_robot_charges(
                 return { "code": response.status_code, "message": response.text}
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
-
-
-# Commented out because of PUDU Timeout
-# @router.get("/shops/robot-battery", response_model=RobotBatteryResponse)
-# def get_shops_robot_changes(
-    #     start_time: int = Query(description="Unix timestamp", ge=0),
-    #     end_time: int = Query(description="Unix timestamp", ge=0),
-    #     shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
-    #     offset: int = Query(0, ge=0),
-    #     limit: int = Query(10, ge=1), 
-    #     timezone_offset: int = 0,
-    #     sn: str | None = Query(None, description="Robot Serial Number"),
-    #     min_cycle: int | None = Query(None, description="Minimum cycle count (filter active when ≥0)", ge=0),
-    #     max_cycle: int | None = Query(None, description="Maximum cycle count (filter active when ≥0)", ge=0),
-    #     min_full_capacity: int | None = Query(None, description="Minimum full capacity (filter active when ≥0)", ge=0),
-    #     max_full_capacity: int | None = Query(None, description="Maximum full capacity (filter active when ≥0)", ge=0),
-    # ):
-    #     encoded_params = clean_and_encode_params({
-    #         "start_time": start_time, 
-    #         "end_time": end_time, 
-    #         "shop_id": shop_id, 
-    #         "offset": offset, 
-    #         "limit": limit, 
-    #         "timezone_offset": timezone_offset,
-    #         "sn": sn,
-    #         "min_cycle": min_cycle,
-    #         "max_cycle": max_cycle,
-    #         "min_full_capacity": min_full_capacity,
-    #         "max_full_capacity": max_full_capacity
-    #     })
-        
-    #     try:
-    #         request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/log/battery/query_list?{encoded_params}')
-    #         hmac_headers = build_headers_with_hmac(**request_data)
-    #         response = requests.get(request_data["url"], headers=hmac_headers)
-                
-    #         if response.status_code == 200:
-    #             return response.json()
-    #         else:
-    #             return { "code": response.status_code, "message": response.text}
-    #     except Exception as e:
-    #         return {"status": "ERROR", "message": str(e)}
