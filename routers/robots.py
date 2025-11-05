@@ -57,6 +57,8 @@ def get_robot_position(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.ROBOT, sn):
+             return {"code": 403, "message": "Forbidden: Robot SN not whitelisted"}
 
         try:
             encoded_params = clean_and_encode_params({
@@ -95,6 +97,9 @@ def get_robot_cleaning_tasks(
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
         if shop_id and not is_allowed_id(EntityType.SHOP, str(shop_id)):
              return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+        if sn and not is_allowed_id(EntityType.ROBOT, sn):
+             return {"code": 403, "message": "Forbidden: Robot SN not whitelisted"}
+        
         try:
             encoded_params = clean_and_encode_params({
                  "shop_id": shop_id,
@@ -128,6 +133,8 @@ def get_robot_cleaning_detail(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.ROBOT, sn):
+             return {"code": 403, "message": "Forbidden: Robot SN not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -154,6 +161,8 @@ def get_robot_cleaning_scheduled_task_list(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.ROBOT, sn):
+             return {"code": 403, "message": "Forbidden: Robot SN not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
