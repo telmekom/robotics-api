@@ -79,8 +79,8 @@ fetchRobotPositions(520400008);
 * **Robot Type**: Could be Industrial (T600 / T600 Underride, T300), Cleaning (MT1, CC1, SH1) or Delivery (FlashBot, BellaBot, KettyBot, PuduBot, HolaBot). X-Lab / X-Series is not yet available. A list of Robots and details can be found on the [PUDU-Website](https://www.pudurobotics.com/en/products)
 * **Product Code, Machine Code**: The exact model of robot. A list of Robots and details can be found on the [PUDU-Website](https://www.pudurobotics.com/en/products)
 * **Robot Operations, Robot Ops**: Includes Statistics and Analysis of tasks and operations of the machines (f.ex. distance, time) - not the amount of robots or the status of them. For these informations refer to Robot Statistics / Analysis
-* **Statistics**: Contrary to Analysis/Analytics it contains pure values with no charts.
-* **Analyis, Analytics**: Contrary to Statistics it focuses on charts.
+* **Statistics**: Contrary to Analysis/Analytics it contains pure values with no charts. Can only query after the statistics are completed within one hour.
+* **Analyis, Analytics**: Contrary to Statistics it focuses on charts. Can only query after the statistics are completed within one hour.
 
 * **Delivery-Task**: Delivers to (multiple) destination point in a single trip. 
 * **Cruise-Task**: "Patrol"-Mode. It circles between predefined points f.ex. for self-service drinks

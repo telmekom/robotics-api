@@ -188,3 +188,4 @@ def get_shops_robot_charges(
                 return { "code": response.status_code, "message": response.text}
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
+
