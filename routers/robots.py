@@ -1,7 +1,6 @@
-from typing import Any
 from fastapi import Depends, Query, APIRouter
 import requests
-from schemas.robot import RobotCleaningDetailResponse, RobotCleaningScheduledTaskResponse, RobotCleaningTaskListResponse, RobotListResponse, RobotPositionResponse
+from schemas.robot import RobotCleaningDetailResponse, RobotCleaningScheduledTaskResponse, RobotCleaningTaskListResponse, RobotDeliveryTaskResponse, RobotListResponse, RobotPositionResponse
 from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
 import os
 from dotenv import load_dotenv
@@ -184,7 +183,7 @@ def get_robot_cleaning_scheduled_task_list(
             return {"status": "ERROR", "message": str(e)}
 
 
-@router.get("/robots/delivery/tasks", name="Delivery Task-List", description="", response_model=Any, responses={
+@router.get("/robots/delivery/tasks", name="Delivery Task-List", description="", response_model=RobotDeliveryTaskResponse, responses={
     200: {
         "description": "Success",
         "content": {
@@ -229,7 +228,7 @@ def get_robot_delivery_tasks(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
        
-@router.get("/robots/delivery/greeter/tasks", name="Greeter Delivery Task-List", description="", response_model=Any, responses={
+@router.get("/robots/delivery/greeter/tasks", name="Greeter Delivery Task-List", description="", response_model=RobotDeliveryTaskResponse, responses={
     200: {
         "description": "Success",
         "content": {
@@ -274,7 +273,7 @@ def get_robot_delivery_greeter_tasks(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
         
-@router.get("/robots/delivery/recovery/tasks", name="Return/Recovery Delivery Task-List", description="", response_model=Any, responses={
+@router.get("/robots/delivery/recovery/tasks", name="Return/Recovery Delivery Task-List", description="", response_model=RobotDeliveryTaskResponse, responses={
     200: {
         "description": "Success",
         "content": {
@@ -319,7 +318,7 @@ def get_robot_delivery_recovery_tasks(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/robots/delivery/call/tasks", name="Call Delivery Task-List", description="", response_model=Any, responses={
+@router.get("/robots/delivery/call/tasks", name="Call Delivery Task-List", description="", response_model=RobotDeliveryTaskResponse, responses={
     200: {
         "description": "Success",
         "content": {
@@ -364,7 +363,7 @@ def get_robot_delivery_call_tasks(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/robots/industrial/lifting/tasks", name="Lifting Task-List", description="", response_model=Any, responses={
+@router.get("/robots/industrial/lifting/tasks", name="Lifting Task-List", description="", response_model=RobotDeliveryTaskResponse, responses={
     200: {
         "description": "Success",
         "content": {

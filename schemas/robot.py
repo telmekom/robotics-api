@@ -17,6 +17,35 @@ class RobotInfos(BaseModel):
     sn: str
     product_code: str
 
+
+# Robot Delivery Task List
+
+class RobotDeliveryTask(BaseModel):
+    task_time: Optional[str] = None
+    product_code: Optional[str] = None
+    mac: Optional[str] = None
+    sn: Optional[str] = None
+    shop_id: Optional[str] = None
+    shop_name: Optional[str] = None
+    begin_time: Optional[str] = None
+    destination: Optional[str] = None
+    arrival_time: Optional[str] = None
+    stay_duration: Optional[float] = None
+    cur_duration: Optional[float] = None
+    cur_mileage: Optional[float] = None
+    robot_name: Optional[str] = None
+
+class RobotDeliveryTaskData(BaseModel):
+    total: Optional[int] = None
+    limit: Optional[int] = None
+    offset: Optional[int] = None
+    list: List[RobotDeliveryTask] = []
+
+
+class RobotDeliveryTaskResponse(BaseResponse):
+    data: Optional[Any]
+
+
 # Robot List
 
 class RobotListData(BaseModel):
