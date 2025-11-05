@@ -2,7 +2,7 @@ from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.analysis import AnalysisResponse, CleaningAnalysisResponse, RobotAnalysisResponse
 from schemas.statistics import RobotOpsStatisticsResponse, RobotStatisticsResponse, ShopStatisticsResponse
-from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme
+from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
 from shared.time import TimeUnit
 import os
 from examples.analysis import analysis_shops_general_example, analysis_shops_cleaning_detail_example,analysis_shops_cleaning_example, analysis_shops_industrial_example, analysis_shops_delivery_example, analysis_shops_cruise_example, analysis_shops_lead_example, analysis_shops_solicit_example, analysis_shops_recovery_example, analysis_shops_call_example, analysis_robot_general_example, statistics_shops_general_example, statistics_robots_general_example, statistics_robots_operations_example
@@ -28,14 +28,16 @@ router = APIRouter(
 def get_analysis_shops_general(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
-
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+        
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -69,7 +71,7 @@ def get_analysis_shops_general(
 def get_analysis_shops_cleaning_detail(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         clean_mode: int = Query(0, description="Clean Mode (0: all, 1: scrubber, 2: sweeping)", ge=0, le=2),
         sub_mode: int = Query(-1, description="Sub Clean Mode (-1: all, 0: custom, 1: carpet vacuuming, 3: silent dust pushing)", ge=-1, le=3),
         timezone_offset: int = 0,
@@ -77,7 +79,9 @@ def get_analysis_shops_cleaning_detail(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
-        
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -112,7 +116,7 @@ def get_analysis_shops_cleaning_detail(
 def get_analysis_shops_cleaning(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0),  
+        shop_id: int = Query(ge=0),  
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         clean_mode: int = Query(0, description="Clean Mode (0: all, 1: scrubber, 2: sweeping)", ge=0, le=2),
         sub_mode: int = Query(-1, description="Sub Clean Mode (-1: all, 0: custom, 1: carpet vacuuming, 3: silent dust pushing)", ge=-1, le=3),
@@ -121,6 +125,8 @@ def get_analysis_shops_cleaning(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -157,14 +163,16 @@ def get_analysis_shops_cleaning(
 def get_analysis_shops_industrial(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
-        
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+
         try:
             encoded_params = clean_and_encode_params({
                 "start_time": start_time, 
@@ -198,13 +206,15 @@ def get_analysis_shops_industrial(
 def get_analysis_shops_delivery(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0),  
+        shop_id: int = Query(ge=0),  
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -239,13 +249,15 @@ def get_analysis_shops_delivery(
 def get_analysis_shops_cruise(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -280,13 +292,15 @@ def get_analysis_shops_cruise(
 def get_analysis_shops_lead(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -321,13 +335,15 @@ def get_analysis_shops_lead(
 def get_analysis_shops_solicit(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -362,7 +378,7 @@ def get_analysis_shops_solicit(
 def get_analysis_shops_recovery(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         ad_id: int | None = Query(None, description="If left empty it will return data for all ads", ge=0),
@@ -370,6 +386,8 @@ def get_analysis_shops_recovery(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -405,13 +423,15 @@ def get_analysis_shops_recovery(
 def get_analysis_shops_call(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -446,13 +466,15 @@ def get_analysis_shops_call(
 def get_analysis_robot_general(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         time_unit: TimeUnit = Query(TimeUnit.DAY, description="Granularity of the charts", examples=[TimeUnit.DAY, TimeUnit.HOUR]),
         timezone_offset: int = 0,
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -489,12 +511,14 @@ def get_analysis_robot_general(
 def get_statistics_shops_general(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         timezone_offset: int = Query(0, description="GMT offset (GMT-12 to GMT+14)", ge=-12, le=14),
         key: str = Depends(header_scheme)
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -534,6 +558,8 @@ def get_statistics_robots_general(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -573,6 +599,8 @@ def get_statistics_robots_operations(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
 
         try:
             encoded_params = clean_and_encode_params({

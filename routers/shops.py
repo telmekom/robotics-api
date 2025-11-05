@@ -1,7 +1,7 @@
 from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.shop import RobotChargeResponse, RobotErrorResponse, RobotLogResponse, ShopListResponse
-from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme
+from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
 import os
 from dotenv import load_dotenv
 from examples.shops import shops_example, shops_robotstatus_example, shops_roboterrors_example, shops_robotcharges_example
@@ -59,7 +59,7 @@ def get_shops(
 def get_shops_robot_status(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         offset: int = Query(0, ge=0),
         limit: int = Query(10, ge=1), 
         check_step: str | None = Query(None, description="f.ex. CheckCAN, CheckESP, CheckRGBD, CheckLidar, CheckMap, Finish"), 
@@ -69,6 +69,8 @@ def get_shops_robot_status(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         encoded_params = clean_and_encode_params({
             "start_time": start_time, 
@@ -106,7 +108,7 @@ def get_shops_robot_status(
 def get_shops_robot_errors(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         offset: int = Query(0, ge=0),
         limit: int = Query(10, ge=1), 
         error_levels: str | None = Query(None, description="Fault level screening, multiple separated by commas. (Fatal|Error|Warning|Event"), 
@@ -116,6 +118,8 @@ def get_shops_robot_errors(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         encoded_params = clean_and_encode_params({
             "start_time": start_time, 
@@ -153,7 +157,7 @@ def get_shops_robot_errors(
 def get_shops_robot_charges(
         start_time: int = Query(description="Unix timestamp", ge=0),
         end_time: int = Query(description="Unix timestamp", ge=0),
-        shop_id: int | None = Query(None, description="If left empty it will return data for all shops", ge=0), 
+        shop_id: int = Query(ge=0), 
         offset: int = Query(0, ge=0),
         limit: int = Query(10, ge=1), 
         timezone_offset: int = 0,
@@ -161,6 +165,8 @@ def get_shops_robot_charges(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         encoded_params = clean_and_encode_params({
             "start_time": start_time, 

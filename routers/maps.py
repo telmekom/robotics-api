@@ -1,7 +1,7 @@
 from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.maps import MapListResponse
-from shared.pudu_api_helper import HACKATHON_API_KEY, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme
+from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
 import os
 from dotenv import load_dotenv
 from examples.maps import maps_example, maps_detail_example
@@ -27,6 +27,8 @@ def get_maps(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         try:
             encoded_params = clean_and_encode_params({
@@ -63,6 +65,8 @@ def get_map_detail(
     ):
         if (key != HACKATHON_API_KEY):
             return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
         return { "code": 501, "message": "Not Yet Implemented"}
         # try:

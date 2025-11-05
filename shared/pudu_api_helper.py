@@ -1,5 +1,6 @@
 import base64
 import datetime
+from enum import Enum
 import hmac
 import hashlib
 
@@ -11,6 +12,19 @@ load_dotenv()
 
 HACKATHON_API_KEY = os.getenv("HACKATHON_API_KEY")
 header_scheme = APIKeyHeader(name="x-key")
+
+
+class EntityType(Enum):
+    ROBOT = "ROBOT"
+    MAP = "MAP"
+    SHOP = "SHOP"
+
+def is_allowed_id(type: EntityType, id: str):
+    WHITELISTED_IDS = os.getenv(f"{type.value}_IDS").split(",")
+    if id not in WHITELISTED_IDS:
+        return None
+    return id
+
 
 def generate_get_header_block(url: str):
     return {
