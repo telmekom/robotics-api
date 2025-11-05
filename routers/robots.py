@@ -1,10 +1,11 @@
+from typing import Any
 from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.robot import RobotCleaningDetailResponse, RobotCleaningScheduledTaskResponse, RobotCleaningTaskListResponse, RobotListResponse, RobotPositionResponse
 from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
 import os
 from dotenv import load_dotenv
-from examples.robots import robots_example, robots_cleaning_tasks_example, robot_cleaning_detail_example
+from examples.robots import robots_example, robots_cleaning_tasks_example, robot_cleaning_detail_example, robot_delivery_tasks_example, robot_delivery_greeter_tasks_example, robot_delivery_recovery_tasks_example, robot_delivery_call_tasks_example,robot_industrial_lifting_tasks_example
 load_dotenv()  
 
 router = APIRouter(
@@ -183,3 +184,230 @@ def get_robot_cleaning_scheduled_task_list(
             return {"status": "ERROR", "message": str(e)}
 
 
+@router.get("/robots/delivery/tasks", name="Delivery Task-List", description="", response_model=Any, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": robot_delivery_tasks_example
+            }
+        }
+    },
+})
+def get_robot_delivery_tasks(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int = Query(ge=0),
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
+    ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if shop_id and not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+        
+        try:
+            encoded_params = clean_and_encode_params({
+                "start_time": start_time,
+                "end_time": end_time,
+                "shop_id": shop_id,
+                "offset": offset,
+                "limit": limit,
+                "timezone_offset": timezone_offset
+            })
+            
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/task/delivery?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
+       
+@router.get("/robots/delivery/greeter/tasks", name="Greeter Delivery Task-List", description="", response_model=Any, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": robot_delivery_greeter_tasks_example
+            }
+        }
+    },
+})
+def get_robot_delivery_greeter_tasks(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int = Query(ge=0),
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
+    ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if shop_id and not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+        
+        try:
+            encoded_params = clean_and_encode_params({
+                "start_time": start_time,
+                "end_time": end_time,
+                "shop_id": shop_id,
+                "offset": offset,
+                "limit": limit,
+                "timezone_offset": timezone_offset
+            })
+            
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/task/greeter?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
+        
+@router.get("/robots/delivery/recovery/tasks", name="Return/Recovery Delivery Task-List", description="", response_model=Any, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": robot_delivery_recovery_tasks_example
+            }
+        }
+    },
+})
+def get_robot_delivery_recovery_tasks(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int = Query(ge=0),
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
+    ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if shop_id and not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+        
+        try:
+            encoded_params = clean_and_encode_params({
+                "start_time": start_time,
+                "end_time": end_time,
+                "shop_id": shop_id,
+                "offset": offset,
+                "limit": limit,
+                "timezone_offset": timezone_offset
+            })
+            
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/task/recovery?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
+
+@router.get("/robots/delivery/call/tasks", name="Call Delivery Task-List", description="", response_model=Any, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": robot_delivery_call_tasks_example
+            }
+        }
+    },
+})
+def get_robot_delivery_call_tasks(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int = Query(ge=0),
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
+    ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if shop_id and not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+        
+        try:
+            encoded_params = clean_and_encode_params({
+                "start_time": start_time,
+                "end_time": end_time,
+                "shop_id": shop_id,
+                "offset": offset,
+                "limit": limit,
+                "timezone_offset": timezone_offset
+            })
+            
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/task/call?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
+
+@router.get("/robots/industrial/lifting/tasks", name="Lifting Task-List", description="", response_model=Any, responses={
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "example": robot_industrial_lifting_tasks_example
+            }
+        }
+    },
+})
+def get_robot_industrial_lifting_tasks(
+        start_time: int = Query(description="Unix timestamp", ge=0),
+        end_time: int = Query(description="Unix timestamp", ge=0),
+        shop_id: int = Query(ge=0),
+        offset: int = Query(0, ge=0),
+        limit: int = Query(10, ge=1), 
+        timezone_offset: int = 0,
+        key: str = Depends(header_scheme)
+    ):
+        if (key != HACKATHON_API_KEY):
+            return {"code": 401, "message": "Unauthorized: API-Key not valid"}
+        if shop_id and not is_allowed_id(EntityType.SHOP, str(shop_id)):
+             return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
+        
+        try:
+            encoded_params = clean_and_encode_params({
+                "start_time": start_time,
+                "end_time": end_time,
+                "shop_id": shop_id,
+                "offset": offset,
+                "limit": limit,
+                "timezone_offset": timezone_offset
+            })
+            
+            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-board/v1/task/lifting?{encoded_params}')
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
+                
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
+
+
+       
