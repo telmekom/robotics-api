@@ -4,8 +4,8 @@
 
 ### Shops
 
-* **Telmekom Fiere/Messe**: 
-  * **ID:** 520400008
+* **Telmekom Dev**: 
+  * **ID:** 541100015
 
 ### Cleaning Robots
 
@@ -37,7 +37,7 @@ async function fetchRobotPositions(shopId) {
     };
 
     // Step 1: Fetch the list of robots
-    const robotsResponse = await fetch(`http://91.212.160.30:8000/robots?shop_id=${shopId}`, {
+    const robotsResponse = await fetch(`https://sfscon.tmkhosting.net/robots?shop_id=${shopId}`, {
       headers
     });
     const robotsData = await robotsResponse.json();
@@ -49,7 +49,7 @@ async function fetchRobotPositions(shopId) {
       // Step 3: Loop through each robot and fetch its position
       for (const robot of robotList) {
         const sn = robot.sn;
-        const positionResponse = await fetch(`http://91.212.160.30:8000/robots/get-position?sn=${sn}`, {
+        const positionResponse = await fetch(`https://sfscon.tmkhosting.net/robots/get-position?sn=${sn}`, {
           headers
         });
         const positionData = await positionResponse.json();
@@ -65,7 +65,7 @@ async function fetchRobotPositions(shopId) {
   }
 }
 
-fetchRobotPositions(520400008);
+fetchRobotPositions(541100015);
 ```
 
 ## FAQ and Vocabulary
@@ -94,7 +94,7 @@ fetchRobotPositions(520400008);
 * **Unit of Measurements**: Area is in m², distance in km and duration in h
 
 ## Related Links
-* **Telmekom API Documentation**: http://91.212.160.30:8000/docs
+* **Telmekom API Documentation**: https://sfscon.tmkhosting.net/docs
 * **PUDU Robots**: https://www.pudurobotics.com/en/products
 * **PUDU Accessories**: https://www.pudurobotics.com/en/accessory
 * **PUDU Cloud API the Telmekom API is based on**: https://open.pudutech.com/
