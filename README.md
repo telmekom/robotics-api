@@ -7,27 +7,19 @@
 * **Telmekom Dev**: 
   * **ID:** 541100015
 
-### Cleaning Robots
+### Robots
 
-* **MT1**: 
-  * **SN:** 866024C03050001 
-  * **MacAddress:** 98:A1:4A:38:C4:DF
-* **CC1Pro**: 
-  * **SN:** 8880F5811070003
-  * **MacAddress:** 60:32:3B:0D:A0:35
-
-### Delivery Robots
-
-* **FlashBot 1**: 
-  * **SN:** 8FD014C03050001
-  * **MacAddress:** 98:A1:4A:38:C5:48
-* **FlashBot 2**: 
-  * **SN:** 8FD034C03050001
-  * **MacAddress:** 98:A1:4A:38:C8:12
+* **T300**: 
+  * **SN:** 826084C10250007 
+  * **MacAddress:** 00:D6:CB:D5:27:B3
+* **CC1**: 
+  * **SN:** 811114C12250003
+  * **MacAddress:** 00:D6:CB:4B:17:81
+* **BellaBot Pro**: 
+  * **SN:** 8BR074C03050004
+  * **MacAddress:** 90:03:71:42:A0:A5
 
 ## Example Snippets
-* **PUDU Map visualization example**: https://codesandbox.io/embed/open-map-render-kz5kf5
-
 ### Get all Robot Positions from a Shop:
 ```javascript
 async function fetchRobotPositions(shopId) {
