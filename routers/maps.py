@@ -84,8 +84,6 @@ def get_map_detail(
                 "app_key" : os.getenv("API_APP_KEY"),
                 "secret_key": os.getenv("API_APP_SECRET"),
             }
-            print(request_data["url"])
-
 
             hmac_headers = build_headers_with_hmac(**request_data)
             response = requests.get(request_data["url"], headers=hmac_headers)
