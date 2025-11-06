@@ -68,33 +68,32 @@ def get_map_detail(
         if not is_allowed_id(EntityType.SHOP, str(shop_id)):
              return {"code": 403, "message": "Forbidden: Shop ID not whitelisted"}
         
-        return { "code": 501, "message": "Not Yet Implemented"}
-        # try:
-        #     encoded_params = clean_and_encode_params({
-        #         "shop_id": shop_id, 
-        #         "map_name": map_name,
-        #         "device_width": device_width, 
-        #         "device_height": device_height,
-        #     })            
+        try:
+            encoded_params = clean_and_encode_params({
+                "shop_id": shop_id, 
+                "map_name": map_name,
+                "device_width": device_width, 
+                "device_height": device_height,
+            })            
 
-        #     request_data = {
-        #         "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/map?{encoded_params}',
-        #         "accept": 'application/json',
-        #         "content_type": 'application/json',
-        #         "method": 'GET',
-        #         "app_key" : os.getenv("API_APP_KEY"),
-        #         "secret_key": os.getenv("API_APP_SECRET"),
-        #     }
-        #     print(request_data["url"])
+            request_data = {
+                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/map?{encoded_params}',
+                "accept": 'application/json',
+                "content_type": 'application/json',
+                "method": 'GET',
+                "app_key" : os.getenv("API_APP_KEY"),
+                "secret_key": os.getenv("API_APP_SECRET"),
+            }
+            print(request_data["url"])
 
 
-        #     hmac_headers = build_headers_with_hmac(**request_data)
-        #     response = requests.get(request_data["url"], headers=hmac_headers)
+            hmac_headers = build_headers_with_hmac(**request_data)
+            response = requests.get(request_data["url"], headers=hmac_headers)
                 
-        #     if response.status_code == 200:
-        #         return response.json()
-        #     else:
-        #         return { "code": response.status_code, "message": response.text}
-        # except Exception as e:
-        #     return {"status": "ERROR", "message": str(e)}
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
 
