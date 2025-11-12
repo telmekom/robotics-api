@@ -3,8 +3,9 @@ import datetime
 from enum import Enum
 import hmac
 import hashlib
+import requests
 
-from urllib.parse import urlencode, urlparse
+from urllib.parse import urlencode, urlparse, unquote
 import os
 from dotenv import load_dotenv
 from fastapi.security import APIKeyHeader
@@ -65,3 +66,33 @@ def build_headers_with_hmac (url: str, accept: str, content_type: str, method: i
     authorization = f"hmac id=\"{app_key}\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"{hmac_signature}\""
 
     return {"Host": host, "Accept": accept, "Content-Type": content_type, "x-date": x_date, "Authorization": authorization}
+
+def call_api(url: str, app_key: str, secret_key: str):
+    url_info = urlparse(url)
+    host = url_info.hostname
+    path = url_info.path
+
+    if url_info.query:
+        query_str = url_info.query
+        split_str = query_str.split("&")
+        sorted_query = "&".join(sorted(split_str))
+        path += "?" + unquote(sorted_query)
+
+    gmt_format = "%a, %d %b %Y %H:%M:%S GMT"
+    x_date = datetime.datetime.utcnow().strftime(gmt_format)
+    content_md5 = ""
+    signing_str = f"x-date: {x_date}\nGET\napplication/json\napplication/json\n{content_md5}\n{path}"
+
+    sign = hmac.new(secret_key.encode(), msg=signing_str.encode(), digestmod=hashlib.sha1).digest()
+    signature = base64.b64encode(sign).decode()
+    authorization = f'hmac id="{app_key}", algorithm="hmac-sha1", headers="x-date", signature="{signature}"'
+
+    headers = {
+        "Host": host,
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "x-date": x_date,
+        "Authorization": authorization
+    }
+
+    return requests.get(url, headers=headers)

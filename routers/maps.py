@@ -1,7 +1,7 @@
 from fastapi import Depends, Query, APIRouter
 import requests
-from schemas.maps import MapListResponse
-from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
+from schemas.maps import MapDetailsResponse, MapListResponse
+from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id, run_url
 import os
 from dotenv import load_dotenv
 from examples.maps import maps_example, maps_detail_example
@@ -46,7 +46,7 @@ def get_maps(
         except Exception as e:
             return {"status": "ERROR", "message": str(e)}
 
-@router.get("/maps/details", name="Map Details", description="", responses={
+@router.get("/maps/details", name="Map Details", response_model=MapDetailsResponse, description="", responses={
     200: {
         "description": "Success",
         "content": {
@@ -76,17 +76,8 @@ def get_map_detail(
                 "device_height": device_height,
             })            
 
-            request_data = {
-                "url": f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/map?{encoded_params}',
-                "accept": 'application/json',
-                "content_type": 'application/json',
-                "method": 'GET',
-                "app_key" : os.getenv("API_APP_KEY"),
-                "secret_key": os.getenv("API_APP_SECRET"),
-            }
-
-            hmac_headers = build_headers_with_hmac(**request_data)
-            response = requests.get(request_data["url"], headers=hmac_headers)
+            url = f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/map?{encoded_params}'
+            response = run_url(url, os.getenv("API_APP_KEY"), os.getenv("API_APP_SECRET"))
                 
             if response.status_code == 200:
                 return response.json()
