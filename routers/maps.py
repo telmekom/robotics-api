@@ -1,7 +1,7 @@
 from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.maps import MapDetailsResponse, MapListResponse
-from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id, run_url
+from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, call_api, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
 import os
 from dotenv import load_dotenv
 from examples.maps import maps_example, maps_detail_example
@@ -77,7 +77,7 @@ def get_map_detail(
             })            
 
             url = f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/map?{encoded_params}'
-            response = run_url(url, os.getenv("API_APP_KEY"), os.getenv("API_APP_SECRET"))
+            response = call_api(url, os.getenv("API_APP_KEY"), os.getenv("API_APP_SECRET"))
                 
             if response.status_code == 200:
                 return response.json()
