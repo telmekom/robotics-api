@@ -1,7 +1,6 @@
 from fastapi import Depends, Query, APIRouter
-import requests
 from schemas.maps import MapDetailsResponse, MapListResponse
-from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, call_api, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
+from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, call_api, clean_and_encode_params, header_scheme, is_allowed_id
 import os
 from dotenv import load_dotenv
 from examples.maps import maps_example, maps_detail_example
@@ -35,9 +34,8 @@ def get_maps(
                 "shop_id": shop_id, 
             })
 
-            request_data = generate_get_header_block(f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/maps?{encoded_params}')
-            hmac_headers = build_headers_with_hmac(**request_data)
-            response = requests.get(request_data["url"], headers=hmac_headers)
+            url = f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/data-open-platform-service/v1/api/maps?{encoded_params}'
+            response = call_api(url, os.getenv("API_APP_KEY"), os.getenv("API_APP_SECRET"))
                 
             if response.status_code == 200:
                 return response.json()
