@@ -1,7 +1,7 @@
 from fastapi import Depends, Query, APIRouter
 import requests
 from schemas.robot import RobotCleaningDetailResponse, RobotCleaningScheduledTaskResponse, RobotCleaningTaskListResponse, RobotDeliveryTaskResponse, RobotListResponse, RobotPositionResponse
-from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id
+from shared.pudu_api_helper import HACKATHON_API_KEY, EntityType, build_headers_with_hmac, call_api, clean_and_encode_params, generate_get_header_block, header_scheme, is_allowed_id, post_call_api
 import os
 from dotenv import load_dotenv
 from examples.robots import robots_example, robots_cleaning_tasks_example, robot_cleaning_detail_example, robot_delivery_tasks_example, robot_delivery_greeter_tasks_example, robot_delivery_recovery_tasks_example, robot_delivery_call_tasks_example,robot_industrial_lifting_tasks_example
@@ -409,4 +409,40 @@ def get_robot_industrial_lifting_tasks(
             return {"status": "ERROR", "message": str(e)}
 
 
-       
+@router.post("/robots/delivery/send_task", name="Send Delivery Task", description="")
+def send_robot_delivery_task(
+        # sn: str = Query(description="Robot Serial Number"),
+        # type: str = Query("NEW", description="NEW|MODIFY"),
+        # delivery_sort: str = Query("AUTO", description="AUTO|FIXED"),
+        # execute_task: bool = Query(False, description="If robot instantly executes task or waits for confirmation"),
+        # #missing "trays" param
+    ):
+        # if not is_allowed_id(EntityType.ROBOT, sn):
+        #     return {"code": 403, "message": "Forbidden: Robot SN not whitelisted"}
+        try:
+            delivery_sort = "AUTO"
+            execute_task = False
+            sn = "8SV043224050010"
+            type = "NEW"
+            trays = [
+                {
+                    "destinations": [
+                        {
+                            "points": "2",
+                            "id": "2"
+                        }
+                    ] 
+                }
+            ]
+
+            {"delivery_sort": delivery_sort, "execute_task": execute_task, "sn": sn, "trays": trays, "type": type }
+
+            url = f'{os.getenv("PUDU_BASE_URL")}/pudu-entry/open-platform-service/v1/position_command'
+            response = post_call_api(url, {"delivery_sort": delivery_sort, "execute_task": execute_task, "sn": sn, "trays": trays, "type": type }, os.getenv("API_APP_KEY"), os.getenv("API_APP_SECRET"))
+
+            if response.status_code == 200:
+                return response.json()
+            else:
+                return { "code": response.status_code, "message": response.text}
+        except Exception as e:
+            return {"status": "ERROR", "message": str(e)}
